@@ -304,6 +304,7 @@ input[type=range]{accent-color:var(--pink);flex:1}
       <p class="hint" style="margin-bottom:18px">Your Builder Identity is ready. Download it or share it on X.</p>
       <canvas id="result-canvas" class="reveal" width="1200" height="1500"></canvas>
       <div id="story-badge-wrap"></div>
+      <div id="regid"></div>
       <div class="actions">
         <button class="btn btn-gold" id="a-dl">⬇ Download PNG</button>
         <button class="btn btn-grad" id="a-share">𝕏 Share on X</button>
@@ -541,12 +542,14 @@ function renderResult(){
   if(MODE==="pfp"){cv.width=1080;cv.height=1080;renderPfp(cv.getContext("2d"));}
   else{cv.width=1200;cv.height=1500;renderId(cv.getContext("2d"));}
   $("story-badge-wrap").innerHTML=D.why?'<div class="storybadge">★ Builder Story Included</div>':"";
+  $("regid").innerHTML='<div style="margin:14px auto 0;display:inline-flex;gap:10px;align-items:center;font-size:14px;color:var(--cream);background:rgba(18,160,92,.12);border:1px solid rgba(18,160,92,.4);border-radius:999px;padding:8px 16px">Registration ID:&nbsp;<b style="color:var(--yellow);letter-spacing:.06em">'+builderNo+'</b><button class="btn btn-sm btn-green" style="padding:5px 12px" onclick="copyId()">Copy</button></div>';
   $("screen-loading").classList.remove("on");goScreen("result");
   var el=cv;el.classList.remove("reveal");void el.offsetWidth;el.classList.add("reveal");
   STATS.builders++;confetti();
 }
 function hashStr(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return h;}
 function genId(){var a="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",s="";for(var i=0;i<6;i++)s+=a[Math.floor(Math.random()*a.length)];return "HHG26-"+s;}
+function copyId(){try{navigator.clipboard.writeText(builderNo);var h=$("result-hint");if(h)h.textContent="Registration ID "+builderNo+" copied.";}catch(e){}}
 
 /* ============================ RESULT ACTIONS ============================ */
 function bindResult(){
