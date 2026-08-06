@@ -201,15 +201,8 @@ input[type=range]{accent-color:var(--pink);flex:1}
         <p class="desc">This is how your Builder Identity will be addressed.</p>
         <div class="field"><label>Full name <span class="req">*</span></label><input class="input" id="f-name" maxlength="34" placeholder="Ada Lovelace"></div>
         <div class="grid2">
-          <div class="field"><label>Email <span class="req">*</span></label><input class="input" id="f-email" type="email" placeholder="you@email.com"></div>
-          <div class="field"><label>College / Company</label><input class="input" id="f-org" maxlength="40" placeholder="IIT Goa"></div>
-        </div>
-        <div class="grid2">
+          <div class="field"><label>Role <span class="req">*</span></label><select id="f-role"></select></div>
           <div class="field"><label>City</label><input class="input" id="f-city" maxlength="24" placeholder="Panaji"></div>
-          <div class="field"><label>Country</label><input class="input" id="f-country" maxlength="24" placeholder="India"></div>
-        </div>
-        <div class="field"><label>Role <span class="req">*</span></label>
-          <select id="f-role"></select>
         </div>
         <div class="stepnav">
           <button class="btn btn-glass" onclick="goScreen('welcome')">← Back</button>
@@ -222,18 +215,6 @@ input[type=range]{accent-color:var(--pink);flex:1}
         <h2>Your stack &amp; story</h2>
         <p class="desc">Pick your tech and answer a few fun ones — these flavor your builder title.</p>
         <div class="field"><label>Tech stack <span class="opt">(tap to select)</span></label><div class="chips" id="f-tech"></div></div>
-        <div class="grid2" style="margin-top:6px">
-          <div class="field"><label>Favorite language</label><input class="input" id="f-lang" maxlength="20" placeholder="Python"></div>
-          <div class="field"><label>Favorite editor</label><input class="input" id="f-editor" maxlength="20" placeholder="VS Code"></div>
-        </div>
-        <div class="grid2">
-          <div class="field"><label>Years of coding</label><input class="input" id="f-years" maxlength="12" placeholder="3"></div>
-          <div class="field"><label>Favorite AI tool</label><input class="input" id="f-aitool" maxlength="20" placeholder="Claude"></div>
-        </div>
-        <div class="field"><label>Dream startup <span class="opt">(optional)</span></label><input class="input" id="f-dream" maxlength="40" placeholder="The next unicorn"></div>
-        <div class="field"><label>First hackathon?</label>
-          <div class="seg" id="f-first"><button class="on" data-v="Yes">Yes</button><button data-v="No">No</button></div>
-        </div>
         <div class="field"><label>Why should HH Goa select you? <span class="opt">(optional · max 200)</span></label>
           <textarea id="f-why" maxlength="200" placeholder="Tell the judges what makes you a builder…"></textarea>
           <div class="count"><span id="why-count">0</span>/200</div>
@@ -471,7 +452,6 @@ function init(){
   rs.value=D.role;rs.addEventListener("change",function(){D.role=rs.value;});
   var tc=$("f-tech");TECH.forEach(function(t){var el=document.createElement("div");el.className="chip";el.textContent=t;el.onclick=function(){var i=D.tech.indexOf(t);if(i>=0){D.tech.splice(i,1);el.classList.remove("on");}else{D.tech.push(t);el.classList.add("on");}};tc.appendChild(el);});
   var tg=$("f-themes");THEMES.forEach(function(th){var el=document.createElement("div");el.className="theme"+(th.id===D.theme?" on":"");el.innerHTML='<div class="sw" style="background:linear-gradient(135deg,'+th.c1+','+th.c2+')"><div style="height:100%;display:flex;align-items:center;justify-content:center;gap:6px"><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent+'"></span><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent2+'"></span></div></div><div class="nm" style="color:'+th.ink+'">'+th.name+'</div>';el.onclick=function(){D.theme=th.id;[].forEach.call(tg.children,function(c){c.classList.remove("on");});el.classList.add("on");drawPhotoPreview();};tg.appendChild(el);});
-  var fs=$("f-first");[].forEach.call(fs.children,function(b){b.onclick=function(){[].forEach.call(fs.children,function(x){x.classList.remove("on");});b.classList.add("on");D.first=b.getAttribute("data-v");};});
   var why=$("f-why");why.addEventListener("input",function(){$("why-count").textContent=why.value.length;});
   bindPhoto();bindResult();animateStats();
 }
@@ -483,9 +463,9 @@ function goScreen(n){["welcome","form","result"].forEach(function(s){$("screen-"
 function startFlow(mode){MODE=mode;STEP=1;collect();goScreen("form");showStep(1);}
 function renderProgress(){var labels=["Details","Stack","Photo","Theme","Review"];var p=$("progress");p.innerHTML="";labels.forEach(function(l,i){var n=i+1;var d=document.createElement("div");d.className="pstep"+(n<STEP?" done":n===STEP?" active":"");d.innerHTML='<span class="b">'+(n<STEP?"✓":n)+'</span><span class="lbl">'+l+'</span>';p.appendChild(d);if(i<labels.length-1){var ln=document.createElement("span");ln.className="line";p.appendChild(ln);}});}
 function showStep(n){STEP=n;[].forEach.call(document.querySelectorAll(".fstep"),function(el){el.classList.toggle("hidden",+el.getAttribute("data-step")!==n);});renderProgress();if(n===3)drawPhotoPreview();if(n===5)buildReview();window.scrollTo(0,0);}
-function collect(){D.name=$("f-name").value.trim();D.email=$("f-email").value.trim();D.org=$("f-org").value.trim();D.city=$("f-city").value.trim();D.country=$("f-country").value.trim();D.role=$("f-role").value;D.lang=$("f-lang").value.trim();D.editor=$("f-editor").value.trim();D.years=$("f-years").value.trim();D.aitool=$("f-aitool").value.trim();D.dream=$("f-dream").value.trim();D.why=$("f-why").value.trim();D.gh=$("f-gh").value.trim();D.x=$("f-x").value.trim();D.inh=$("f-in").value.trim();D.web=$("f-web").value.trim();}
+function collect(){D.name=$("f-name").value.trim();D.city=$("f-city").value.trim();D.role=$("f-role").value;D.why=$("f-why").value.trim();D.gh=$("f-gh").value.trim();D.x=$("f-x").value.trim();D.inh=$("f-in").value.trim();D.web=$("f-web").value.trim();}
 function nextStep(n){collect();
-  if(n===1){if(!D.name){flash("f-name");return;}if(!D.email||D.email.indexOf("@")<0){flash("f-email");return;}}
+  if(n===1){if(!D.name){flash("f-name");return;}}
   if(n===3&&!photoImg){$("dropzone").classList.add("drag");setTimeout(function(){$("dropzone").classList.remove("drag");},600);$("result-hint");return;}
   showStep(n+1);
 }
@@ -494,7 +474,7 @@ function flash(id){var el=$(id);el.style.borderColor="var(--pink)";el.focus();se
 
 /* review */
 function buildReview(){D.title=funTitle(D.role,TSEED);drawPhotoPreview();
-  var rows=[["Name",D.name||"—"],["Email",D.email||"—"],["Role",D.role],["City",[D.city,D.country].filter(Boolean).join(", ")||"—"],["Tech",D.tech.slice(0,6).join(", ")||"—"],["Theme",themeById(D.theme).name],["Builder title",D.title]];
+  var rows=[["Name",D.name||"—"],["Role",D.role],["City",D.city||"—"],["Tech",D.tech.slice(0,6).join(", ")||"—"],["Theme",themeById(D.theme).name],["Builder title",D.title]];
   if(D.why)rows.push(["Builder story","★ Included"]);
   $("review-list").innerHTML=rows.map(function(r){return '<div class="rev-row"><span class="k">'+r[0]+'</span><span class="v">'+esc(r[1])+'</span></div>';}).join("");
 }
@@ -553,7 +533,9 @@ function makeQR(text,cb){
 }
 function finishGenerate(){
   if(MODE==="pfp"){renderResult();return;}
-  makeQR(qrTarget(),function(img){qrImg=img;renderResult();});
+  var done=false;function go(){if(done)return;done=true;renderResult();}
+  try{makeQR(qrTarget(),function(img){qrImg=img;go();});}catch(e){go();}
+  setTimeout(go,1800);
 }
 function renderResult(){
   var cv=$("result-canvas");
