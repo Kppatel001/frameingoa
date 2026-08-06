@@ -514,10 +514,7 @@ function generate(){collect();
   var iv=setInterval(function(){i++;if(i<LOAD_MSGS.length){lt.textContent=LOAD_MSGS[i];}},330);
   setTimeout(function(){clearInterval(iv);lt.textContent=LOAD_MSGS[LOAD_MSGS.length-1];finishGenerate();},LOAD_MSGS.length*330+140);
 }
-function qrTarget(){
-  var origin=(typeof location!=="undefined"&&location.origin)?location.origin:"https://frameingoa.vercel.app";
-  return origin+"/register?reg="+encodeURIComponent(builderNo)+(D.name?("&n="+encodeURIComponent(D.name)):"")+(D.role?("&r="+encodeURIComponent(D.role)):"");
-}
+function qrTarget(){return builderNo;}
 function makeQR(text,cb){
   loadScript("https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js",function(){
     try{
