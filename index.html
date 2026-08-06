@@ -420,10 +420,9 @@ function renderId(ctx){
   var soc=[D.gh?"gh/"+D.gh.replace(/^@/,""):"",D.x?"x/"+D.x.replace(/^@/,""):"",D.inh?"in/"+D.inh.replace(/^@/,""):""].filter(Boolean).join("     ");if(soc){ctx.fillStyle=th.accent;ctx.font='500 26px "Space Grotesk"';ctx.textAlign="center";ctx.fillText(soc,C,1130);}
   /* band: QR + number */
   var band=1200;ctx.fillStyle="rgba(255,255,255,.05)";H.rr(60,band,W-120,200,24);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.3);ctx.lineWidth=2;H.rr(60,band,W-120,200,24);ctx.stroke();
-  var qx=96,qy=band+25,qs=150;if(qrImg){ctx.fillStyle="#FFF7DF";H.rr(qx-6,qy-6,qs+12,qs+12,10);ctx.fill();ctx.drawImage(qrImg,qx,qy,qs,qs);}else{H.fauxQR(qx,qy,qs,th.c2,th.accent);}var tx=96+150+44;ctx.textAlign="left";ctx.fillStyle="rgba(255,255,255,.6)";ctx.font='500 22px "Space Grotesk"';ctx.fillText("REGISTRATION ID",tx,band+50);
-  ctx.fillStyle=th.accent;ctx.font='700 40px "Space Grotesk"';ctx.fillText(builderNo,tx,band+96);
-  ctx.fillStyle="rgba(255,255,255,.55)";ctx.font='500 22px "Space Grotesk"';ctx.fillText(new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}),tx,band+134);
-  ctx.fillStyle=th.accent2;ctx.font='900 28px "Playfair Display"';ctx.fillText("Hacking Goa's Future",tx,band+176);
+  var qx=96,qy=band+25,qs=150;if(qrImg){ctx.fillStyle="#FFF7DF";H.rr(qx-6,qy-6,qs+12,qs+12,10);ctx.fill();ctx.drawImage(qrImg,qx,qy,qs,qs);}else{H.fauxQR(qx,qy,qs,th.c2,th.accent);}var tx=96+150+44;ctx.textAlign="left";ctx.fillStyle="rgba(255,255,255,.6)";ctx.font='500 22px "Space Grotesk"';ctx.fillText("SCAN TO REGISTER",tx,band+56);
+  ctx.fillStyle="rgba(255,255,255,.55)";ctx.font='500 22px "Space Grotesk"';ctx.fillText(new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}),tx,band+104);
+  ctx.fillStyle=th.accent2;ctx.font='900 28px "Playfair Display"';ctx.fillText("Hacking Goa's Future",tx,band+150);
   /* story badge */
   if(D.why){ctx.textAlign="center";ctx.fillStyle=H.hexA(th.accent,.16);var sbw=340,sbx=C-sbw/2;H.rr(sbx,1418,sbw,44,22);ctx.fill();ctx.fillStyle=th.accent;ctx.font='600 22px "Space Grotesk"';ctx.fillText("★ Builder Story Included",C,1447);}
   else{ctx.textAlign="center";ctx.fillStyle=H.hexA(th.ink,.7);ctx.font='700 24px "Space Grotesk"';ctx.fillText("#FrameInGoa",C,1450);}
@@ -542,7 +541,7 @@ function renderResult(){
   if(MODE==="pfp"){cv.width=1080;cv.height=1080;renderPfp(cv.getContext("2d"));}
   else{cv.width=1200;cv.height=1500;renderId(cv.getContext("2d"));}
   $("story-badge-wrap").innerHTML=D.why?'<div class="storybadge">★ Builder Story Included</div>':"";
-  $("regid").innerHTML='<div style="margin:14px auto 0;display:inline-flex;gap:10px;align-items:center;font-size:14px;color:var(--cream);background:rgba(18,160,92,.12);border:1px solid rgba(18,160,92,.4);border-radius:999px;padding:8px 16px">Registration ID:&nbsp;<b style="color:var(--yellow);letter-spacing:.06em">'+builderNo+'</b><button class="btn btn-sm btn-green" style="padding:5px 12px" onclick="copyId()">Copy</button></div>';
+  $("regid").innerHTML="";
   $("screen-loading").classList.remove("on");goScreen("result");
   var el=cv;el.classList.remove("reveal");void el.offsetWidth;el.classList.add("reveal");
   STATS.builders++;confetti();
