@@ -502,7 +502,7 @@ function loadPhoto(file){ptf.dx=0;ptf.dy=0;ptf.scale=1;$("p-zoom").value=1;
   if(isHeic){loadScript("https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js",function(){window.heic2any({blob:file,toType:"image/jpeg",quality:.92}).then(function(o){done(Array.isArray(o)?o[0]:o);}).catch(function(){done(file);});});}
   else done(file);
 }
-function loadScript(src,cb){if(window.__l&&window.__l[src]){cb();return;}var s=document.createElement("script");s.src=src;s.onload=function(){window.__l=window.__l||{};window.__l[src]=1;cb();};document.head.appendChild(s);}
+function loadScript(src,cb){if(window.__l&&window.__l[src]){cb();return;}var s=document.createElement("script");s.src=src;s.onload=function(){window.__l=window.__l||{};window.__l[src]=1;cb();};s.onerror=function(){};document.head.appendChild(s);}
 
 /* ============================ GENERATE ============================ */
 var LOAD_MSGS=["Uploading photo…","Optimizing image…","Detecting face…","Generating builder title…","Creating hacker identity…","Designing premium card…","Almost ready…","Welcome to HH Goa!"];
@@ -522,19 +522,21 @@ function qrTarget(){
   return w||g||xx||(origin+"/?b="+encodeURIComponent(builderNo));
 }
 function makeQR(text,cb){
-  loadScript("https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js",function(){
+  loadScript("https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js",function(){
     try{
-      window.QRCode.toDataURL(text,{errorCorrectionLevel:"M",margin:1,scale:8,color:{dark:"#0a0a0a",light:"#FFF7DF"}},function(err,url){
-        if(err||!url){cb(null);return;}
-        var im=new Image();im.onload=function(){cb(im);};im.onerror=function(){cb(null);};im.src=url;
-      });
+      var qr=window.qrcode(0,"M");qr.addData(String(text));qr.make();
+      var n=qr.getModuleCount(),cell=8,pad=cell*2,size=n*cell+pad*2;
+      var c=document.createElement("canvas");c.width=size;c.height=size;var x=c.getContext("2d");
+      x.fillStyle="#FFF7DF";x.fillRect(0,0,size,size);x.fillStyle="#0a0a0a";
+      for(var r=0;r<n;r++)for(var col=0;col<n;col++){if(qr.isDark(r,col))x.fillRect(pad+col*cell,pad+r*cell,cell,cell);}
+      cb(c);
     }catch(e){cb(null);}
   });
 }
 function finishGenerate(){
   if(MODE==="pfp"){renderResult();return;}
   var done=false;function go(){if(done)return;done=true;renderResult();}
-  try{makeQR(qrTarget(),function(img){qrImg=img;go();});}catch(e){go();}
+  makeQR(qrTarget(),function(img){qrImg=img;if(done){if(img)renderResult();}else{go();}});
   setTimeout(go,1800);
 }
 function renderResult(){
