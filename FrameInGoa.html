@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>HH Goa 2026 — Builder Identity Platform</title>
+<meta name="description" content="Build your official Hacker House Goa 2026 Builder Identity and share it with the world. #FrameInGoa" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#006B3C;--gb:#12A05C;--yellow:#FFD43B;--pink:#FF2D7A;
+  --dark:#071B12;--darker:#04120C;--cream:#FCE9A8;
+  --ink:#eafff3;--muted:rgba(234,255,243,.62);--faint:rgba(234,255,243,.4);
+  --glass:rgba(255,255,255,.05);--glassb:rgba(255,255,255,.12);
+  --r:20px;
+}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{min-height:100dvh;color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;
+  background:var(--darker);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#mesh{position:fixed;inset:0;z-index:0;pointer-events:none}
+.app{position:relative;z-index:1;min-height:100dvh}
+a{color:inherit;text-decoration:none}::selection{background:var(--pink);color:#fff}
+.container{max-width:1000px;margin:0 auto;padding:0 20px}
+.wrap-narrow{max-width:680px;margin:0 auto;padding:0 20px}
+
+/* nav */
+.nav{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:18px 20px}
+.brandmark{font-family:"Playfair Display",serif;font-weight:900;font-size:20px;color:var(--yellow);display:flex;align-items:center;gap:8px;cursor:pointer}
+.brandmark .dev{background:var(--pink);color:#fff;font-family:"Noto Sans Devanagari",sans-serif;font-size:13px;padding:1px 9px;border-radius:999px}
+.nav .tag{font-size:12px;color:var(--faint);letter-spacing:.14em;text-transform:uppercase}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:600;font-size:16px;border-radius:14px;padding:14px 22px;cursor:pointer;border:1px solid transparent;transition:transform .1s,opacity .15s,box-shadow .2s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-grad{background:linear-gradient(120deg,var(--pink),#ff6aa0);color:#fff;box-shadow:0 8px 30px rgba(255,45,122,.35)}
+.btn-gold{background:linear-gradient(120deg,var(--yellow),#ffe486);color:#3a2a00;box-shadow:0 8px 30px rgba(255,212,59,.28)}
+.btn-glass{background:var(--glass);color:var(--ink);border-color:var(--glassb)}
+.btn-ghost{background:transparent;color:var(--yellow);border-color:rgba(255,212,59,.5)}
+.btn-sm{padding:10px 16px;font-size:14px;border-radius:11px}
+.btn-lg{padding:16px 28px;font-size:17px}
+
+/* glass card */
+.glass{background:var(--glass);border:1px solid var(--glassb);border-radius:var(--r);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+
+/* screens */
+.screen{display:none;animation:fade .5s ease}
+.screen.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* hero */
+.hero{text-align:center;padding:60px 0 40px}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--cream);border:1px solid rgba(255,212,59,.3);border-radius:999px;padding:7px 16px;margin-bottom:22px}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--gb);box-shadow:0 0 10px var(--gb);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.hero h1{font-family:"Playfair Display",serif;font-weight:900;font-size:clamp(38px,8vw,74px);line-height:1.02;margin:0 0 18px;color:#fff;letter-spacing:-.5px}
+.hero h1 .g{background:linear-gradient(120deg,var(--yellow),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{color:var(--muted);font-size:clamp(16px,3.6vw,20px);max-width:600px;margin:0 auto 32px;line-height:1.5}
+.cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:560px;margin:44px auto 0}
+.stat{padding:18px 12px;text-align:center}
+.stat .n{font-family:"Playfair Display",serif;font-weight:900;font-size:clamp(24px,5vw,34px);color:var(--yellow)}
+.stat .l{font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+.feat{display:flex;gap:8px 20px;justify-content:center;flex-wrap:wrap;margin-top:28px;color:var(--cream);font-size:14px}
+.feat span{display:inline-flex;align-items:center;gap:7px}.feat .c{color:var(--gb);font-weight:700}
+
+/* progress */
+.progress{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin:10px 0 26px}
+.pstep{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--faint)}
+.pstep .b{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;background:var(--glass);border:1px solid var(--glassb);transition:.3s}
+.pstep.active .b{background:linear-gradient(120deg,var(--pink),#ff6aa0);border-color:transparent;color:#fff}
+.pstep.done .b{background:var(--gb);border-color:transparent;color:#04120C}
+.pstep.active,.pstep.done{color:var(--ink)}
+.pstep .line{width:16px;height:2px;background:var(--glassb)}
+@media(max-width:640px){.pstep .lbl{display:none}.pstep .line{width:10px}}
+
+/* form */
+.formcard{padding:26px}
+.formcard h2{font-family:"Playfair Display",serif;font-weight:900;font-size:26px;margin:0 0 4px}
+.formcard .desc{color:var(--muted);font-size:14px;margin:0 0 20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:13px;color:var(--cream);font-weight:500}
+.field .req{color:var(--pink)}
+.field .opt{color:var(--faint);font-weight:400}
+.input,select,textarea{width:100%;padding:13px 14px;border-radius:12px;font-size:15px;color:#fff;outline:none;
+  background:rgba(4,18,12,.55);border:1px solid var(--glassb);font-family:inherit;transition:border .15s}
+.input:focus,select:focus,textarea:focus{border-color:var(--yellow)}
+.input::placeholder,textarea::placeholder{color:rgba(255,255,255,.34)}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--cream) 50%),linear-gradient(135deg,var(--cream) 50%,transparent 50%);background-position:calc(100% - 20px) 20px,calc(100% - 14px) 20px;background-size:6px 6px,6px 6px;background-repeat:no-repeat}
+textarea{resize:vertical;min-height:70px}
+.count{font-size:11px;color:var(--faint);text-align:right}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:8px 13px;border-radius:999px;border:1px solid var(--glassb);background:rgba(4,18,12,.4);color:var(--cream);cursor:pointer;transition:.15s;user-select:none}
+.chip:hover{border-color:rgba(255,212,59,.5)}
+.chip.on{background:linear-gradient(120deg,var(--pink),#ff6aa0);border-color:transparent;color:#fff}
+
+/* toggle */
+.seg{display:inline-flex;border:1px solid var(--glassb);border-radius:12px;overflow:hidden}
+.seg button{background:transparent;color:var(--muted);border:none;padding:10px 18px;font-family:inherit;font-size:14px;cursor:pointer}
+.seg button.on{background:var(--gb);color:#04120C;font-weight:600}
+
+/* uploader */
+.uploadbox{display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed rgba(255,212,59,.45);border-radius:16px;padding:30px 18px;cursor:pointer;text-align:center;transition:.15s}
+.uploadbox:hover,.uploadbox.drag{border-color:var(--yellow);background:rgba(255,212,59,.06)}
+.uploadbox .ic{font-size:32px}
+.photo-stage{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:620px){.photo-stage{grid-template-columns:1fr 260px}}
+.pcanvas-wrap{display:flex;justify-content:center}
+.pcanvas-wrap canvas{width:100%;max-width:260px;height:auto;border-radius:16px;touch-action:none;cursor:grab;box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.pcanvas-wrap canvas:active{cursor:grabbing}
+.slider-row{display:flex;align-items:center;gap:10px;margin-top:10px}
+.slider-row span{font-size:12px;color:var(--cream);min-width:70px}
+input[type=range]{accent-color:var(--pink);flex:1}
+
+/* themes grid */
+.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.theme{border:2px solid transparent;border-radius:16px;overflow:hidden;cursor:pointer;transition:.15s;background:var(--glass)}
+.theme.on{border-color:var(--yellow)}
+.theme .sw{height:80px}
+.theme .nm{padding:9px 12px;font-size:13px;font-weight:600}
+
+/* review */
+.review-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:640px){.review-grid{grid-template-columns:220px 1fr}}
+.rev-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px}
+.rev-row .k{color:var(--muted)}.rev-row .v{text-align:right;font-weight:500}
+
+/* nav buttons */
+.stepnav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+
+/* loading */
+#screen-loading{display:none;position:fixed;inset:0;z-index:50;background:radial-gradient(900px 600px at 50% 30%,#0d3a24,var(--darker));align-items:center;justify-content:center;text-align:center}
+#screen-loading.on{display:flex}
+.loader{position:relative;width:150px;height:150px;margin:0 auto 26px}
+.loader .ring{position:absolute;inset:0;border-radius:50%;border:4px solid rgba(255,212,59,.15);border-top-color:var(--yellow);animation:spin 1s linear infinite}
+.loader .ring2{position:absolute;inset:16px;border-radius:50%;border:3px solid rgba(255,45,122,.15);border-bottom-color:var(--pink);animation:spin 1.4s linear infinite reverse}
+.loader .mono{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:900;font-size:34px;color:var(--yellow)}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loadtext{font-size:19px;font-weight:600;color:#fff;min-height:26px}
+#loadsub{color:var(--muted);font-size:13px;margin-top:8px;letter-spacing:.14em;text-transform:uppercase}
+
+/* result */
+.result-wrap{text-align:center;padding:20px 0 60px}
+.reveal{animation:rise .7s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(40px) scale(.96)}to{opacity:1;transform:none}}
+.result-wrap canvas{width:100%;max-width:400px;height:auto;border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:26px}
+.storybadge{display:inline-flex;align-items:center;gap:8px;margin:16px auto 0;font-size:13px;color:var(--cream);background:rgba(255,212,59,.1);border:1px solid rgba(255,212,59,.35);border-radius:999px;padding:8px 16px}
+.hint{color:var(--muted);font-size:13px;margin-top:12px}
+.foot{text-align:center;color:var(--faint);font-size:12px;padding:26px 0 40px}
+.foot b{color:var(--yellow)}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<canvas id="mesh"></canvas>
+<div class="app">
+  <nav class="nav">
+    <div class="brandmark" onclick="goScreen('welcome')">HACKER HOUSE <span class="dev">गोवा</span></div>
+    <div class="tag">Builder Identity · 2026</div>
+  </nav>
+
+  <!-- ============ WELCOME ============ -->
+  <section id="screen-welcome" class="screen on">
+    <div class="container hero">
+      <span class="pill"><span class="dot"></span> No login · Instant · Mobile-first</span>
+      <h1>Welcome to <span class="g">HH Goa 2026</span></h1>
+      <p class="sub">Build your official Hacker House Goa Builder Identity and share it with the world.</p>
+      <div class="cta">
+        <button class="btn btn-grad btn-lg" onclick="startFlow('id')">Create My Builder ID</button>
+        <button class="btn btn-glass btn-lg" onclick="startFlow('pfp')">Generate PFP Frame</button>
+      </div>
+      <div class="stats glass">
+        <div class="stat"><div class="n" id="s-builders">0</div><div class="l">Builders Generated</div></div>
+        <div class="stat"><div class="n" id="s-downloads">0</div><div class="l">Downloads</div></div>
+        <div class="stat"><div class="n" id="s-shares">0</div><div class="l">Shares on X</div></div>
+      </div>
+      <div class="feat">
+        <span><i class="c">✓</i> Face-safe smart crop</span>
+        <span><i class="c">✓</i> 10 premium themes</span>
+        <span><i class="c">✓</i> HD download</span>
+        <span><i class="c">✓</i> Share to X</span>
+      </div>
+    </div>
+    <div class="foot">Fan-made platform · branding inspired by the Hacker House Goa mark · <b>#FrameInGoa</b></div>
+  </section>
+
+  <!-- ============ FORM ============ -->
+  <section id="screen-form" class="screen">
+    <div class="wrap-narrow" style="padding-top:14px">
+      <div class="progress" id="progress"></div>
+
+      <!-- STEP 1: personal -->
+      <div class="fstep glass formcard" data-step="1">
+        <h2>Personal details</h2>
+        <p class="desc">This is how your Builder Identity will be addressed.</p>
+        <div class="field"><label>Full name <span class="req">*</span></label><input class="input" id="f-name" maxlength="34" placeholder="Ada Lovelace"></div>
+        <div class="grid2">
+          <div class="field"><label>Email <span class="req">*</span></label><input class="input" id="f-email" type="email" placeholder="you@email.com"></div>
+          <div class="field"><label>College / Company</label><input class="input" id="f-org" maxlength="40" placeholder="IIT Goa"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>City</label><input class="input" id="f-city" maxlength="24" placeholder="Panaji"></div>
+          <div class="field"><label>Country</label><input class="input" id="f-country" maxlength="24" placeholder="India"></div>
+        </div>
+        <div class="field"><label>Role <span class="req">*</span></label>
+          <select id="f-role"></select>
+        </div>
+        <div class="stepnav">
+          <button class="btn btn-glass" onclick="goScreen('welcome')">← Back</button>
+          <button class="btn btn-grad" onclick="nextStep(1)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: tech + fun -->
+      <div class="fstep glass formcard hidden" data-step="2">
+        <h2>Your stack &amp; story</h2>
+        <p class="desc">Pick your tech and answer a few fun ones — these flavor your builder title.</p>
+        <div class="field"><label>Tech stack <span class="opt">(tap to select)</span></label><div class="chips" id="f-tech"></div></div>
+        <div class="grid2" style="margin-top:6px">
+          <div class="field"><label>Favorite language</label><input class="input" id="f-lang" maxlength="20" placeholder="Python"></div>
+          <div class="field"><label>Favorite editor</label><input class="input" id="f-editor" maxlength="20" placeholder="VS Code"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>Years of coding</label><input class="input" id="f-years" maxlength="12" placeholder="3"></div>
+          <div class="field"><label>Favorite AI tool</label><input class="input" id="f-aitool" maxlength="20" placeholder="Claude"></div>
+        </div>
+        <div class="field"><label>Dream startup <span class="opt">(optional)</span></label><input class="input" id="f-dream" maxlength="40" placeholder="The next unicorn"></div>
+        <div class="field"><label>First hackathon?</label>
+          <div class="seg" id="f-first"><button class="on" data-v="Yes">Yes</button><button data-v="No">No</button></div>
+        </div>
+        <div class="field"><label>Why should HH Goa select you? <span class="opt">(optional · max 200)</span></label>
+          <textarea id="f-why" maxlength="200" placeholder="Tell the judges what makes you a builder…"></textarea>
+          <div class="count"><span id="why-count">0</span>/200</div>
+        </div>
+        <h2 style="font-size:20px;margin-top:8px">Social links <span class="opt" style="font-size:13px">(optional)</span></h2>
+        <div class="grid2">
+          <div class="field"><label>GitHub</label><input class="input" id="f-gh" maxlength="24" placeholder="username"></div>
+          <div class="field"><label>X</label><input class="input" id="f-x" maxlength="24" placeholder="handle"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>LinkedIn</label><input class="input" id="f-in" maxlength="30" placeholder="in-handle"></div>
+          <div class="field"><label>Portfolio</label><input class="input" id="f-web" maxlength="40" placeholder="site.com"></div>
+        </div>
+        <div class="stepnav">
+          <button class="btn btn-glass" onclick="prevStep(2)">← Back</button>
+          <button class="btn btn-grad" onclick="nextStep(2)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: photo -->
+      <div class="fstep glass formcard hidden" data-step="3">
+        <h2>Photo upload</h2>
+        <p class="desc">Drag to position, zoom, and tune brightness. Your face stays front and center.</p>
+        <div id="photo-empty">
+          <label class="uploadbox" id="dropzone">
+            <input type="file" id="f-file" accept="image/*,.heic,.heif" hidden>
+            <span class="ic">📸</span>
+            <span style="color:var(--yellow);font-weight:700">Drop a photo or tap to upload</span>
+            <span style="color:var(--muted);font-size:13px">JPG · PNG · WEBP · HEIC</span>
+          </label>
+        </div>
+        <div id="photo-stage" class="photo-stage hidden">
+          <div class="pcanvas-wrap"><canvas id="p-canvas" width="600" height="600"></canvas></div>
+          <div>
+            <div class="slider-row"><span>Zoom</span><input type="range" id="p-zoom" min="1" max="3" step="0.01" value="1"></div>
+            <div class="slider-row"><span>Brightness</span><input type="range" id="p-bright" min="0.6" max="1.5" step="0.01" value="1"></div>
+            <label class="chip" style="display:inline-flex;margin-top:12px"><input type="checkbox" id="p-blur" style="margin-right:8px">Blur backdrop</label>
+            <label class="btn btn-glass btn-sm" style="margin-top:12px;display:inline-flex;cursor:pointer"><input type="file" id="f-file2" accept="image/*,.heic,.heif" hidden> Change photo</label>
+          </div>
+        </div>
+        <div class="stepnav">
+          <button class="btn btn-glass" onclick="prevStep(3)">← Back</button>
+          <button class="btn btn-grad" id="photo-next" onclick="nextStep(3)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: theme -->
+      <div class="fstep glass formcard hidden" data-step="4">
+        <h2>Choose your theme</h2>
+        <p class="desc">Ten looks, one identity. Pick the vibe that's you.</p>
+        <div class="themes" id="f-themes"></div>
+        <div class="stepnav">
+          <button class="btn btn-glass" onclick="prevStep(4)">← Back</button>
+          <button class="btn btn-grad" onclick="nextStep(4)">Review →</button>
+        </div>
+      </div>
+
+      <!-- STEP 5: review -->
+      <div class="fstep glass formcard hidden" data-step="5">
+        <h2>Review</h2>
+        <p class="desc">One last look before we forge your identity.</p>
+        <div class="review-grid">
+          <div class="pcanvas-wrap"><canvas id="r-photo" width="400" height="400" style="max-width:200px"></canvas></div>
+          <div id="review-list"></div>
+        </div>
+        <div class="stepnav">
+          <button class="btn btn-glass" onclick="prevStep(5)">← Edit</button>
+          <button class="btn btn-gold btn-lg" onclick="generate()">✦ Generate Builder Card</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOADING ============ -->
+  <div id="screen-loading">
+    <div>
+      <div class="loader"><div class="ring"></div><div class="ring2"></div><div class="mono">HH</div></div>
+      <div id="loadtext">Uploading photo…</div>
+      <div id="loadsub">Hacker House Goa 2026</div>
+    </div>
+  </div>
+
+  <!-- ============ RESULT ============ -->
+  <section id="screen-result" class="screen">
+    <div class="wrap-narrow result-wrap">
+      <h2 style="font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(26px,6vw,40px);margin:6px 0 4px">Welcome to HH Goa! 🎉</h2>
+      <p class="hint" style="margin-bottom:18px">Your Builder Identity is ready. Download it or share it on X.</p>
+      <canvas id="result-canvas" class="reveal" width="1200" height="1500"></canvas>
+      <div id="story-badge-wrap"></div>
+      <div class="actions">
+        <button class="btn btn-gold" id="a-dl">⬇ Download PNG</button>
+        <button class="btn btn-grad" id="a-share">𝕏 Share on X</button>
+        <button class="btn btn-glass" id="a-again">↻ Generate Another</button>
+      </div>
+      <p class="hint" id="result-hint"></p>
+      <div class="foot">Built with 💚 for Hacker House Goa 2026 · <b>#FrameInGoa</b></div>
+    </div>
+  </section>
+</div>
+<script>
+/* ============================ DATA ============================ */
+var HASH="#FrameInGoa #HHGoa2026 #BuildInPublic";
+var ROLES=["Student","Frontend Developer","Backend Developer","Full Stack Developer","Flutter Developer","Mobile Developer","AI Engineer","ML Engineer","Cyber Security","UI/UX Designer","Founder","Product Manager","DevOps Engineer","Blockchain Developer"];
+var TECH=["React","Next.js","Flutter","Node.js","Python","Java","Go","Rust","C++","PHP","Laravel","Firebase","Supabase","MongoDB","PostgreSQL","Docker","AWS","Azure","Google Cloud","TensorFlow","PyTorch","Kubernetes","Git","GitHub"];
+var THEMES=[
+  {id:"classic",name:"Classic HH Goa",c1:"#0d3a24",c2:"#04120C",accent:"#FFD43B",accent2:"#FF2D7A",ink:"#FCE9A8",motif:"waves"},
+  {id:"cyberpunk",name:"Cyberpunk",c1:"#170033",c2:"#05000f",accent:"#00E5FF",accent2:"#FF2D95",ink:"#d7f7ff",motif:"scan"},
+  {id:"glass",name:"Glassmorphism",c1:"#12203a",c2:"#070b18",accent:"#8B7BFF",accent2:"#5DE1C4",ink:"#eaf0ff",motif:"dots"},
+  {id:"minimal",name:"Minimal",c1:"#161a17",c2:"#0b0d0c",accent:"#FFD43B",accent2:"#9aa",ink:"#f0f2ef",motif:"none"},
+  {id:"ocean",name:"Ocean Goa",c1:"#053041",c2:"#02141c",accent:"#37D0E0",accent2:"#FFD43B",ink:"#d6f7ff",motif:"waves"},
+  {id:"sunset",name:"Sunset",c1:"#3a1030",c2:"#170614",accent:"#FF9E45",accent2:"#FF2D7A",ink:"#ffe9dd",motif:"dots"},
+  {id:"matrix",name:"Matrix",c1:"#021206",c2:"#000600",accent:"#2BFF88",accent2:"#12A05C",ink:"#c7ffd9",motif:"matrix"},
+  {id:"terminal",name:"Terminal",c1:"#0a0a0a",c2:"#000",accent:"#33FF66",accent2:"#33FF66",ink:"#c9ffd6",motif:"scan"},
+  {id:"neon",name:"Neon",c1:"#1a0033",c2:"#0a0018",accent:"#C86BFF",accent2:"#FF5EC8",ink:"#f2e6ff",motif:"grid"},
+  {id:"darkhacker",name:"Dark Hacker",c1:"#0c1410",c2:"#050806",accent:"#12A05C",accent2:"#FFD43B",ink:"#d6ffe6",motif:"grid"}
+];
+var TITLE_POOLS=[
+  [/ai|ml|machine|prompt|neural|llm|tensor|pytorch/i,["Prompt Wizard","Neural Ninja","Model Whisperer","Gradient Wrangler","API Architect"]],
+  [/front|react|next|ui|vue|flutter|mobile|ios|android/i,["Pixel Magician","Interface Alchemist","Pixel Poet","Cross-Platform Ninja"]],
+  [/back|node|api|server|go|rust|java|php|laravel/i,["API Architect","Backend Beast","Latency Slayer","Server Sorcerer"]],
+  [/full/i,["Code Architect","Stack Overlord","Zero-to-One Builder"]],
+  [/security|cyber|hack/i,["Digital Guardian","Zero-Day Sentinel","Cyber Ronin"]],
+  [/design|ux|ui|figma/i,["Pixel Magician","Vibe Architect","Design Renegade"]],
+  [/founder|ceo|cto|pm|product|manager/i,["Future Unicorn Founder","Ship-It Captain","Chief Chaos Officer"]],
+  [/blockchain|web3|solidity/i,["Chain Reactor","Ledger Legend","Web3 Wizard"]],
+  [/devops|kubernetes|docker|aws|azure|cloud/i,["Cloud Commander","Uptime Guardian","Deploy Daemon"]],
+  [/student|beginner|fresher/i,["Future Founder","Rookie Renegade","Next-Gen Hacker"]]
+];
+function funTitle(role,seed){var pool=["Chaos Coder","Idea Machine","Midnight Shipper","Builder Supreme"];for(var i=0;i<TITLE_POOLS.length;i++){if(TITLE_POOLS[i][0].test(role)){pool=TITLE_POOLS[i][1];break;}}return pool[Math.abs(seed)%pool.length];}
+
+/* form state */
+var D={name:"",email:"",org:"",city:"",country:"",role:"Student",tech:[],lang:"",editor:"",years:"",aitool:"",dream:"",first:"Yes",why:"",gh:"",x:"",inh:"",web:"",theme:"classic"};
+var MODE="id", STEP=1, TSEED=0;
+var photoImg=null, ptf={scale:1,dx:0,dy:0,bright:1,blur:false};
+var builderNo="";
+var STATS={builders:1287,downloads:3960,shares:2140};
+
+/* ============================ MESH BG ============================ */
+(function(){
+  var c=document.getElementById("mesh"),x=c.getContext("2d"),W,H,pts=[];
+  function rs(){W=c.width=innerWidth;H=c.height=innerHeight;pts=[];var n=Math.min(60,Math.floor(W*H/26000));for(var i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25});}
+  function draw(){
+    var g=x.createRadialGradient(W*.5,H*.1,60,W*.5,H*.6,Math.max(W,H));
+    g.addColorStop(0,"#0d3a24");g.addColorStop(.5,"#071B12");g.addColorStop(1,"#04120C");
+    x.fillStyle=g;x.fillRect(0,0,W,H);
+    for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+      for(var j=i+1;j<pts.length;j++){var q=pts[j],d=Math.hypot(p.x-q.x,p.y-q.y);if(d<130){x.strokeStyle="rgba(18,160,92,"+(.14*(1-d/130))+")";x.lineWidth=1;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke();}}
+      x.fillStyle="rgba(255,212,59,.35)";x.beginPath();x.arc(p.x,p.y,1.5,0,7);x.fill();}
+    requestAnimationFrame(draw);
+  }
+  addEventListener("resize",rs);rs();draw();
+})();
+
+/* ============================ CANVAS HELPERS ============================ */
+function mk(ctx){
+  function hexA(h,a){var n=parseInt(h.slice(1),16);return"rgba("+((n>>16)&255)+","+((n>>8)&255)+","+(n&255)+","+a+")";}
+  function rr(x,y,w,h,r){var m=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+m,y);ctx.arcTo(x+w,y,x+w,y+h,m);ctx.arcTo(x+w,y+h,x,y+h,m);ctx.arcTo(x,y+h,x,y,m);ctx.arcTo(x,y,x+w,y,m);ctx.closePath();}
+  function coverC(im,cx,cy,r,tf){if(!im)return;var iw=im.naturalWidth||im.width,ih=im.naturalHeight||im.height,s=Math.max(r*2/iw,r*2/ih)*((tf&&tf.scale)||1);ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.clip();if(tf&&tf.bright)ctx.filter="brightness("+tf.bright+")";ctx.drawImage(im,cx-iw*s/2+((tf&&tf.dx)||0),cy-ih*s/2+((tf&&tf.dy)||0),iw*s,ih*s);ctx.filter="none";ctx.restore();}
+  function spaced(t,cx,y,sp){var a=t.split(""),tot=0,i;for(i=0;i<a.length;i++)tot+=ctx.measureText(a[i]).width+sp;tot-=sp;var xx=cx-tot/2;var pa=ctx.textAlign;ctx.textAlign="left";for(i=0;i<a.length;i++){ctx.fillText(a[i],xx,y);xx+=ctx.measureText(a[i]).width+sp;}ctx.textAlign=pa;}
+  function fit(t,mw,wt,fam,st,mn){var s=st;ctx.font=wt+" "+s+"px "+fam;while(ctx.measureText(t).width>mw&&s>mn){s-=2;ctx.font=wt+" "+s+"px "+fam;}return s;}
+  function fauxQR(x,y,s,dark,light){ctx.fillStyle=light;rr(x-6,y-6,s+12,s+12,10);ctx.fill();ctx.fillStyle=dark;var n=11,c=s/n;for(var i=0;i<n;i++)for(var j=0;j<n;j++){if(((i*7+j*13+i*j)%3)===0)ctx.fillRect(x+i*c,y+j*c,c,c);}ctx.fillRect(x,y,c*3,c*3);ctx.fillRect(x+s-c*3,y,c*3,c*3);ctx.fillRect(x,y+s-c*3,c*3,c*3);ctx.fillStyle=light;ctx.fillRect(x+c,y+c,c,c);ctx.fillRect(x+s-c*2,y+c,c,c);ctx.fillRect(x+c,y+s-c*2,c,c);}
+  function motif(w,h,th){var m=th.motif;if(m==="none")return;ctx.save();
+    if(m==="waves"){ctx.strokeStyle=hexA(th.accent2,.28);ctx.lineWidth=3;for(var k=0;k<4;k++){ctx.beginPath();var yb=h*(.8+k*.045);for(var xx=0;xx<=w;xx+=12)ctx.lineTo(xx,yb+Math.sin(xx/w*Math.PI*4+k)*16);ctx.stroke();}}
+    else if(m==="dots"){ctx.fillStyle=hexA(th.accent,.14);for(var gy=40;gy<h;gy+=40)for(var gx=40;gx<w;gx+=40){ctx.beginPath();ctx.arc(gx,gy,2,0,7);ctx.fill();}}
+    else if(m==="grid"){ctx.strokeStyle=hexA(th.accent,.1);ctx.lineWidth=1;for(var gx2=0;gx2<w;gx2+=54){ctx.beginPath();ctx.moveTo(gx2,0);ctx.lineTo(gx2,h);ctx.stroke();}for(var gy2=0;gy2<h;gy2+=54){ctx.beginPath();ctx.moveTo(0,gy2);ctx.lineTo(w,gy2);ctx.stroke();}}
+    else if(m==="matrix"){ctx.font="600 22px monospace";ctx.fillStyle=hexA(th.accent,.16);var gl="01<>[]{}#$@";for(var mx=20;mx<w;mx+=34)for(var my=44;my<h;my+=42)ctx.fillText(gl[(mx+my)%gl.length],mx,my);}
+    else if(m==="scan"){ctx.strokeStyle=hexA(th.accent,.09);ctx.lineWidth=2;for(var sy=0;sy<h;sy+=6){ctx.beginPath();ctx.moveTo(0,sy);ctx.lineTo(w,sy);ctx.stroke();}}
+    ctx.restore();}
+  return {hexA:hexA,rr:rr,coverC:coverC,spaced:spaced,fit:fit,fauxQR:fauxQR,motif:motif};
+}
+
+/* ============================ CARD RENDERERS ============================ */
+function themeById(id){for(var i=0;i<THEMES.length;i++)if(THEMES[i].id===id)return THEMES[i];return THEMES[0];}
+
+function paintBase(ctx,H,w,h,th){
+  if(ptf.blur&&photoImg){ctx.save();ctx.filter="blur(26px) brightness(.5)";var iw=photoImg.naturalWidth,ih=photoImg.naturalHeight,s=Math.max(w/iw,h/ih);ctx.drawImage(photoImg,w/2-iw*s/2,h/2-ih*s/2,iw*s,ih*s);ctx.filter="none";ctx.fillStyle="rgba(4,10,8,.55)";ctx.fillRect(0,0,w,h);ctx.restore();}
+  else{var g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,th.c1);g.addColorStop(1,th.c2);ctx.fillStyle=g;ctx.fillRect(0,0,w,h);}
+  H.motif(w,h,th);
+  var gl=ctx.createRadialGradient(w/2,h*.2,40,w/2,h*.2,w);gl.addColorStop(0,H.hexA(th.accent,.16));gl.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=gl;ctx.fillRect(0,0,w,h);
+}
+
+function renderId(ctx){
+  var th=themeById(D.theme),H=mk(ctx),W=1200,Ht=1500,C=600;
+  paintBase(ctx,H,W,Ht,th);
+  ctx.strokeStyle=H.hexA(th.accent,.5);ctx.lineWidth=3;H.rr(26,26,W-52,Ht-52,40);ctx.stroke();
+  ctx.textAlign="center";ctx.textBaseline="alphabetic";
+  ctx.fillStyle=th.accent;ctx.font='900 60px "Playfair Display"';H.spaced("HACKER HOUSE",C,126,3);
+  var bw=160,bh=56,bx=C-bw/2,by=146;ctx.fillStyle=th.accent2;H.rr(bx,by,bw,bh,28);ctx.fill();ctx.fillStyle="#fff";ctx.font='700 34px "Noto Sans Devanagari"';ctx.fillText("गोवा",C,by+40);
+  ctx.fillStyle=th.ink;ctx.font='600 24px "Space Grotesk"';H.spaced("2026   ·   BUILDER PASS",C,252,4);
+  /* photo */
+  var pr=232,pcy=520;ctx.save();ctx.shadowColor="rgba(0,0,0,.5)";ctx.shadowBlur=40;ctx.shadowOffsetY=12;ctx.fillStyle=th.c2;ctx.beginPath();ctx.arc(C,pcy,pr+12,0,7);ctx.fill();ctx.restore();
+  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="rgba(255,255,255,.06)";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=th.ink;ctx.font='500 32px "Space Grotesk"';ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
+  ctx.strokeStyle=th.accent;ctx.lineWidth=8;ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();ctx.strokeStyle=th.accent2;ctx.lineWidth=3;ctx.beginPath();ctx.arc(C,pcy,pr+12,0,7);ctx.stroke();
+  /* name */
+  var name=(D.name||"Your Name").slice(0,34);ctx.textAlign="center";var ns=H.fit(name,1000,"900",'"Playfair Display"',84,44);ctx.fillStyle=th.accent;ctx.font='900 '+ns+'px "Playfair Display"';ctx.fillText(name,C,858);
+  var rc=[D.role,D.city].filter(Boolean).join("  ·  ").slice(0,54);if(rc){ctx.fillStyle=th.ink;ctx.font='500 32px "Space Grotesk"';ctx.fillText(rc,C,904);}
+  /* title pill */
+  var title=D.title||funTitle(D.role,TSEED);var t=title.toUpperCase().slice(0,30);ctx.font='700 32px "Space Grotesk"';var tw=ctx.measureText(t).width,pw=tw+66,ph=60,plx=C-pw/2,ply=938;var pg=ctx.createLinearGradient(plx,0,plx+pw,0);pg.addColorStop(0,th.accent2);pg.addColorStop(1,th.accent);ctx.fillStyle=pg;H.rr(plx,ply,pw,ph,30);ctx.fill();ctx.fillStyle="#0a0a0a";ctx.fillText(t,C,ply+41);
+  /* tech chips */
+  var chips=D.tech.slice(0,7);if(chips.length){ctx.font='500 24px "Space Grotesk"';var gap=14,tot=0,ws=[];for(var i=0;i<chips.length;i++){var cw=ctx.measureText(chips[i]).width+30;ws.push(cw);tot+=cw+gap;}tot-=gap;var sx=C-tot/2,cy=1040;for(var i2=0;i2<chips.length;i2++){ctx.fillStyle=H.hexA(th.accent,.14);H.rr(sx,cy,ws[i2],42,21);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.4);ctx.lineWidth=1;H.rr(sx,cy,ws[i2],42,21);ctx.stroke();ctx.fillStyle=th.ink;ctx.textAlign="center";ctx.fillText(chips[i2],sx+ws[i2]/2,cy+28);sx+=ws[i2]+gap;}}
+  /* socials */
+  var soc=[D.gh?"gh/"+D.gh.replace(/^@/,""):"",D.x?"x/"+D.x.replace(/^@/,""):"",D.inh?"in/"+D.inh.replace(/^@/,""):""].filter(Boolean).join("     ");if(soc){ctx.fillStyle=th.accent;ctx.font='500 26px "Space Grotesk"';ctx.textAlign="center";ctx.fillText(soc,C,1130);}
+  /* band: QR + number */
+  var band=1200;ctx.fillStyle="rgba(255,255,255,.05)";H.rr(60,band,W-120,200,24);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.3);ctx.lineWidth=2;H.rr(60,band,W-120,200,24);ctx.stroke();
+  H.fauxQR(96,band+25,150,th.c2,th.accent);var tx=96+150+44;ctx.textAlign="left";ctx.fillStyle="rgba(255,255,255,.6)";ctx.font='500 22px "Space Grotesk"';ctx.fillText("BUILDER No.",tx,band+50);
+  ctx.fillStyle=th.accent;ctx.font='700 40px "Space Grotesk"';ctx.fillText(builderNo,tx,band+96);
+  ctx.fillStyle="rgba(255,255,255,.55)";ctx.font='500 22px "Space Grotesk"';ctx.fillText(new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}),tx,band+134);
+  ctx.fillStyle=th.accent2;ctx.font='900 28px "Playfair Display"';ctx.fillText("Hacking Goa's Future",tx,band+176);
+  /* story badge */
+  if(D.why){ctx.textAlign="center";ctx.fillStyle=H.hexA(th.accent,.16);var sbw=340,sbx=C-sbw/2;H.rr(sbx,1418,sbw,44,22);ctx.fill();ctx.fillStyle=th.accent;ctx.font='600 22px "Space Grotesk"';ctx.fillText("★ Builder Story Included",C,1447);}
+  else{ctx.textAlign="center";ctx.fillStyle=H.hexA(th.ink,.7);ctx.font='700 24px "Space Grotesk"';ctx.fillText("#FrameInGoa",C,1450);}
+}
+
+function renderPfp(ctx){
+  var th=themeById(D.theme),H=mk(ctx),S=1080,C=540;
+  paintBase(ctx,H,S,S,th);
+  var rO=500,rT=470,rP=392;
+  ctx.save();ctx.beginPath();ctx.arc(C,C,rO,0,7);ctx.arc(C,C,rP+6,0,7,true);ctx.fillStyle=th.c2;ctx.fill("evenodd");ctx.restore();
+  ctx.lineCap="round";ctx.strokeStyle=th.accent2;ctx.lineWidth=10;ctx.beginPath();ctx.arc(C,C,rO-4,Math.PI*.08,Math.PI*.42);ctx.stroke();ctx.beginPath();ctx.arc(C,C,rO-4,Math.PI*1.08,Math.PI*1.42);ctx.stroke();ctx.strokeStyle=th.accent;ctx.beginPath();ctx.arc(C,C,rO-4,Math.PI*.58,Math.PI*.92);ctx.stroke();ctx.beginPath();ctx.arc(C,C,rO-4,Math.PI*1.58,Math.PI*1.92);ctx.stroke();
+  ctx.strokeStyle=th.accent;ctx.lineWidth=4;ctx.beginPath();ctx.arc(C,C,rO,0,7);ctx.stroke();
+  if(photoImg)H.coverC(photoImg,C,C,rP,ptf);else{ctx.fillStyle="rgba(255,255,255,.06)";ctx.beginPath();ctx.arc(C,C,rP,0,7);ctx.fill();ctx.fillStyle=th.ink;ctx.font='500 40px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,C);ctx.textBaseline="alphabetic";}
+  ctx.strokeStyle=th.accent;ctx.lineWidth=6;ctx.beginPath();ctx.arc(C,C,rP+6,0,7);ctx.stroke();
+  ctx.fillStyle=th.accent;ctx.font='900 46px "Playfair Display"';arcText(ctx,"HACKER HOUSE  •  GOA 2026",C,C,rT,-Math.PI/2,1,2);
+  ctx.fillStyle=th.ink;ctx.font='700 30px "Space Grotesk"';arcText(ctx,"BUILDER • HACKER • CREATOR • INNOVATOR",C,C,rT,Math.PI/2,-1,3);
+  var bw=168,bh=60,bx=C-bw/2,by=C+rP-6;ctx.fillStyle=th.accent2;H.rr(bx,by,bw,bh,30);ctx.fill();ctx.fillStyle="#fff";ctx.font='700 36px "Noto Sans Devanagari"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("गोवा",C,by+bh/2+2);ctx.textBaseline="alphabetic";
+}
+function arcText(ctx,str,cx,cy,r,ca,dir,sp){var ch=str.split(""),w=ch.map(function(c){return ctx.measureText(c).width+sp;}),tot=w.reduce(function(a,b){return a+b;},0),ang=ca-dir*tot/r/2;ctx.textAlign="center";ctx.textBaseline="middle";for(var i=0;i<ch.length;i++){var wa=w[i]/r;ang+=dir*wa/2;ctx.save();ctx.translate(cx+Math.cos(ang)*r,cy+Math.sin(ang)*r);ctx.rotate(ang+(dir>0?Math.PI/2:-Math.PI/2));ctx.fillText(ch[i],0,0);ctx.restore();ang+=dir*wa/2;}ctx.textBaseline="alphabetic";}
+
+/* preview redraws */
+function drawPhotoPreview(){var cs=[document.getElementById("p-canvas"),document.getElementById("r-photo")];cs.forEach(function(cv){if(!cv)return;var ctx=cv.getContext("2d"),H=mk(ctx),S=cv.width,C=S/2;ctx.clearRect(0,0,S,S);var th=themeById(D.theme);ctx.fillStyle=th.c2;ctx.beginPath();ctx.arc(C,C,C-6,0,7);ctx.fill();if(photoImg)H.coverC(photoImg,C,C,C-10,ptf);else{ctx.fillStyle=th.ink;ctx.font='500 22px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,C);ctx.textBaseline="alphabetic";}ctx.strokeStyle=th.accent;ctx.lineWidth=6;ctx.beginPath();ctx.arc(C,C,C-8,0,7);ctx.stroke();});}
+/* ============================ INIT ============================ */
+function $(id){return document.getElementById(id);}
+function init(){
+  var rs=$("f-role");ROLES.forEach(function(r){var o=document.createElement("option");o.value=r;o.textContent=r;rs.appendChild(o);});
+  rs.value=D.role;rs.addEventListener("change",function(){D.role=rs.value;});
+  var tc=$("f-tech");TECH.forEach(function(t){var el=document.createElement("div");el.className="chip";el.textContent=t;el.onclick=function(){var i=D.tech.indexOf(t);if(i>=0){D.tech.splice(i,1);el.classList.remove("on");}else{D.tech.push(t);el.classList.add("on");}};tc.appendChild(el);});
+  var tg=$("f-themes");THEMES.forEach(function(th){var el=document.createElement("div");el.className="theme"+(th.id===D.theme?" on":"");el.innerHTML='<div class="sw" style="background:linear-gradient(135deg,'+th.c1+','+th.c2+')"><div style="height:100%;display:flex;align-items:center;justify-content:center;gap:6px"><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent+'"></span><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent2+'"></span></div></div><div class="nm" style="color:'+th.ink+'">'+th.name+'</div>';el.onclick=function(){D.theme=th.id;[].forEach.call(tg.children,function(c){c.classList.remove("on");});el.classList.add("on");drawPhotoPreview();};tg.appendChild(el);});
+  var fs=$("f-first");[].forEach.call(fs.children,function(b){b.onclick=function(){[].forEach.call(fs.children,function(x){x.classList.remove("on");});b.classList.add("on");D.first=b.getAttribute("data-v");};});
+  var why=$("f-why");why.addEventListener("input",function(){$("why-count").textContent=why.value.length;});
+  bindPhoto();bindResult();animateStats();
+}
+/* stats */
+function animateStats(){[["s-builders",STATS.builders],["s-downloads",STATS.downloads],["s-shares",STATS.shares]].forEach(function(p){var el=$(p[0]),tgt=p[1],c=0;var iv=setInterval(function(){c+=Math.ceil((tgt-c)/14);if(c>=tgt){c=tgt;clearInterval(iv);}el.textContent=c.toLocaleString();},32);});}
+
+/* screens + steps */
+function goScreen(n){["welcome","form","result"].forEach(function(s){$("screen-"+s).classList.toggle("on",s===n);});$("screen-loading").classList.remove("on");window.scrollTo(0,0);}
+function startFlow(mode){MODE=mode;STEP=1;collect();goScreen("form");showStep(1);}
+function renderProgress(){var labels=["Details","Stack","Photo","Theme","Review"];var p=$("progress");p.innerHTML="";labels.forEach(function(l,i){var n=i+1;var d=document.createElement("div");d.className="pstep"+(n<STEP?" done":n===STEP?" active":"");d.innerHTML='<span class="b">'+(n<STEP?"✓":n)+'</span><span class="lbl">'+l+'</span>';p.appendChild(d);if(i<labels.length-1){var ln=document.createElement("span");ln.className="line";p.appendChild(ln);}});}
+function showStep(n){STEP=n;[].forEach.call(document.querySelectorAll(".fstep"),function(el){el.classList.toggle("hidden",+el.getAttribute("data-step")!==n);});renderProgress();if(n===3)drawPhotoPreview();if(n===5)buildReview();window.scrollTo(0,0);}
+function collect(){D.name=$("f-name").value.trim();D.email=$("f-email").value.trim();D.org=$("f-org").value.trim();D.city=$("f-city").value.trim();D.country=$("f-country").value.trim();D.role=$("f-role").value;D.lang=$("f-lang").value.trim();D.editor=$("f-editor").value.trim();D.years=$("f-years").value.trim();D.aitool=$("f-aitool").value.trim();D.dream=$("f-dream").value.trim();D.why=$("f-why").value.trim();D.gh=$("f-gh").value.trim();D.x=$("f-x").value.trim();D.inh=$("f-in").value.trim();D.web=$("f-web").value.trim();}
+function nextStep(n){collect();
+  if(n===1){if(!D.name){flash("f-name");return;}if(!D.email||D.email.indexOf("@")<0){flash("f-email");return;}}
+  if(n===3&&!photoImg){$("dropzone").classList.add("drag");setTimeout(function(){$("dropzone").classList.remove("drag");},600);$("result-hint");return;}
+  showStep(n+1);
+}
+function prevStep(n){collect();if(n===1){goScreen("welcome");return;}showStep(n-1);}
+function flash(id){var el=$(id);el.style.borderColor="var(--pink)";el.focus();setTimeout(function(){el.style.borderColor="";},900);}
+
+/* review */
+function buildReview(){D.title=funTitle(D.role,TSEED);drawPhotoPreview();
+  var rows=[["Name",D.name||"—"],["Email",D.email||"—"],["Role",D.role],["City",[D.city,D.country].filter(Boolean).join(", ")||"—"],["Tech",D.tech.slice(0,6).join(", ")||"—"],["Theme",themeById(D.theme).name],["Builder title",D.title]];
+  if(D.why)rows.push(["Builder story","★ Included"]);
+  $("review-list").innerHTML=rows.map(function(r){return '<div class="rev-row"><span class="k">'+r[0]+'</span><span class="v">'+esc(r[1])+'</span></div>';}).join("");
+}
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+
+/* ============================ PHOTO ============================ */
+function bindPhoto(){
+  function handle(e){var f=e.target.files&&e.target.files[0];if(f)loadPhoto(f);}
+  $("f-file").addEventListener("change",handle);$("f-file2").addEventListener("change",handle);
+  var dz=$("dropzone");
+  ["dragover","dragenter"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.add("drag");});});
+  ["dragleave","drop"].forEach(function(ev){dz.addEventListener(ev,function(e){e.preventDefault();dz.classList.remove("drag");});});
+  dz.addEventListener("drop",function(e){var f=e.dataTransfer.files&&e.dataTransfer.files[0];if(f)loadPhoto(f);});
+  $("p-zoom").addEventListener("input",function(e){ptf.scale=+e.target.value;drawPhotoPreview();});
+  $("p-bright").addEventListener("input",function(e){ptf.bright=+e.target.value;drawPhotoPreview();});
+  $("p-blur").addEventListener("change",function(e){ptf.blur=e.target.checked;drawPhotoPreview();});
+  var cv=$("p-canvas"),drag=false,lx=0,ly=0;
+  cv.addEventListener("pointerdown",function(e){if(!photoImg)return;drag=true;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId);});
+  cv.addEventListener("pointermove",function(e){if(!drag)return;var r=cv.width/cv.getBoundingClientRect().width;ptf.dx+=(e.clientX-lx)*r;ptf.dy+=(e.clientY-ly)*r;lx=e.clientX;ly=e.clientY;drawPhotoPreview();});
+  cv.addEventListener("pointerup",function(){drag=false;});cv.addEventListener("pointercancel",function(){drag=false;});
+}
+function loadPhoto(file){ptf.dx=0;ptf.dy=0;ptf.scale=1;$("p-zoom").value=1;
+  var isHeic=/heic|heif/i.test(file.type)||/\.(heic|heif)$/i.test(file.name);
+  function done(bl){var u=URL.createObjectURL(bl),i=new Image();i.onload=function(){photoImg=i;$("photo-empty").classList.add("hidden");$("photo-stage").classList.remove("hidden");drawPhotoPreview();setTimeout(function(){URL.revokeObjectURL(u);},3000);};i.src=u;}
+  if(isHeic){loadScript("https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js",function(){window.heic2any({blob:file,toType:"image/jpeg",quality:.92}).then(function(o){done(Array.isArray(o)?o[0]:o);}).catch(function(){done(file);});});}
+  else done(file);
+}
+function loadScript(src,cb){if(window.__l&&window.__l[src]){cb();return;}var s=document.createElement("script");s.src=src;s.onload=function(){window.__l=window.__l||{};window.__l[src]=1;cb();};document.head.appendChild(s);}
+
+/* ============================ GENERATE ============================ */
+var LOAD_MSGS=["Uploading photo…","Optimizing image…","Detecting face…","Generating builder title…","Creating hacker identity…","Designing premium card…","Almost ready…","Welcome to HH Goa!"];
+function generate(){collect();
+  builderNo="HHG26-"+String(100000+(Math.abs(hashStr(D.name+D.email+Date.now()))%900000));
+  D.title=funTitle(D.role,TSEED);
+  var ov=$("screen-loading");ov.classList.add("on");
+  var i=0,lt=$("loadtext");lt.textContent=LOAD_MSGS[0];
+  var iv=setInterval(function(){i++;if(i<LOAD_MSGS.length){lt.textContent=LOAD_MSGS[i];}},330);
+  setTimeout(function(){clearInterval(iv);lt.textContent=LOAD_MSGS[LOAD_MSGS.length-1];finishGenerate();},LOAD_MSGS.length*330+140);
+}
+function finishGenerate(){
+  var cv=$("result-canvas");
+  if(MODE==="pfp"){cv.width=1080;cv.height=1080;renderPfp(cv.getContext("2d"));}
+  else{cv.width=1200;cv.height=1500;renderId(cv.getContext("2d"));}
+  $("story-badge-wrap").innerHTML=D.why?'<div class="storybadge">★ Builder Story Included</div>':"";
+  $("screen-loading").classList.remove("on");goScreen("result");
+  var el=cv;el.classList.remove("reveal");void el.offsetWidth;el.classList.add("reveal");
+  STATS.builders++;confetti();
+}
+function hashStr(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return h;}
+
+/* ============================ RESULT ACTIONS ============================ */
+function bindResult(){
+  $("a-dl").onclick=function(){var cv=$("result-canvas");var a=document.createElement("a");a.download="HHGoa2026-"+(builderNo||"builder")+".png";a.href=cv.toDataURL("image/png");a.click();STATS.downloads++;confetti();};
+  $("a-share").onclick=function(){shareX();};
+  $("a-again").onclick=function(){goScreen("welcome");};
+}
+function dataURLtoBlob(d){var arr=d.split(","),mime=(arr[0].match(/:(.*?);/)||[])[1]||"image/png",bstr=atob(arr[1]),n=bstr.length,u8=new Uint8Array(n);while(n--)u8[n]=bstr.charCodeAt(n);return new Blob([u8],{type:mime});}
+function shareX(){
+  var cv=$("result-canvas");var dataUrl=cv.toDataURL("image/png");
+  var cap="🚀 Just created my official HH Goa 2026 Builder Identity! Can't wait to build with amazing hackers at HH Goa.";
+  var text=cap+" "+HASH;
+  var file;try{file=new File([dataURLtoBlob(dataUrl)],"HHGoa2026-"+builderNo+".png",{type:"image/png"});}catch(e){file=null;}
+  STATS.shares++;
+  if(file&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],text:text}).then(function(){$("result-hint").textContent="Shared! Add #FrameInGoa if it isn't in your post.";}).catch(function(){});return;}
+  var a=document.createElement("a");a.download="HHGoa2026-"+builderNo+".png";a.href=dataUrl;a.click();
+  var w=window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text),"_blank");if(!w)location.href="https://twitter.com/intent/tweet?text="+encodeURIComponent(text);
+  $("result-hint").textContent="Image downloaded + X opened — attach the image in the composer, then post with #FrameInGoa.";
+}
+function confetti(){function fire(){var c=window.confetti,cl=["#FFD43B","#FF2D7A","#12A05C","#fff"];c({particleCount:120,spread:75,origin:{y:.4},colors:cl});setTimeout(function(){c({particleCount:70,angle:60,spread:55,origin:{x:0},colors:cl});c({particleCount:70,angle:120,spread:55,origin:{x:1},colors:cl});},160);}loadScript("https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js",fire);}
+
+/* boot */
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){if(STEP===3)drawPhotoPreview();});}
+init();
+</script>
+</body>
+</html>

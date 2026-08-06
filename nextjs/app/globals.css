@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --green: #006B3C;
+  --green-bright: #12A05C;
+  --yellow: #FFD43B;
+  --pink: #FF2D7A;
+  --dark: #071B12;
+  --darker: #04120C;
+  --cream: #FCE9A8;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  min-height: 100dvh;
+  color: #eafff3;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  background:
+    radial-gradient(1100px 700px at 50% -8%, #0d3a24 0%, var(--dark) 46%, var(--darker) 100%) fixed;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(rgba(18,160,92,0.10) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.page { position: relative; z-index: 1; }
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--pink); color: #fff; }
+
+.container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+/* nav */
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; max-width: 1080px; margin: 0 auto; }
+.brandmark { font-family: "Playfair Display", serif; font-weight: 900; font-size: 22px; color: var(--yellow); display: flex; align-items: center; gap: 8px; }
+.brandmark .dev { background: var(--pink); color: #fff; font-family: "Noto Sans Devanagari", sans-serif; font-size: 14px; padding: 1px 10px; border-radius: 999px; }
+.nav-links { display: flex; gap: 8px; }
+
+/* glass */
+.glass {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,212,59,0.22);
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+}
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; font-weight: 700; font-size: 16px; border-radius: 12px; padding: 13px 20px; cursor: pointer; border: 1px solid transparent; transition: transform .08s, opacity .15s, background .15s; }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-yellow { background: var(--yellow); color: #3a2a00; }
+.btn-pink { background: var(--pink); color: #fff; }
+.btn-green { background: var(--green-bright); color: #06231a; }
+.btn-ghost { background: transparent; color: var(--yellow); border-color: var(--yellow); }
+.btn-sm { padding: 9px 14px; font-size: 14px; border-radius: 10px; }
+
+/* forms */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field label { font-size: 13px; color: var(--cream); font-weight: 500; }
+.field .req { color: var(--pink); }
+.input {
+  width: 100%; padding: 12px 14px; border-radius: 12px; font-size: 16px; color: #fff; outline: none;
+  background: rgba(4,18,12,0.6); border: 1px solid rgba(255,212,59,0.28);
+}
+.input:focus { border-color: var(--yellow); }
+.input::placeholder { color: rgba(255,255,255,0.4); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* hero */
+.hero { text-align: center; padding: 46px 0 26px; }
+.pill { display: inline-block; font-size: 13px; font-weight: 500; color: var(--cream); border: 1px solid rgba(255,212,59,0.3); border-radius: 999px; padding: 6px 14px; margin-bottom: 20px; }
+.hero h1 { font-family: "Playfair Display", serif; font-weight: 900; font-size: clamp(34px, 7vw, 66px); line-height: 1.03; margin: 0 0 16px; color: #fff; }
+.hero h1 .g { color: var(--yellow); }
+.hero p.sub { color: rgba(234,255,243,0.82); font-size: clamp(15px, 3.6vw, 19px); max-width: 620px; margin: 0 auto 28px; }
+.cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.features { display: flex; gap: 10px 22px; justify-content: center; flex-wrap: wrap; margin-top: 26px; color: var(--cream); font-size: 14px; }
+.features span { display: inline-flex; align-items: center; gap: 7px; }
+.check { color: var(--green-bright); font-weight: 700; }
+
+/* option cards */
+.opts { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 36px; }
+@media (min-width: 760px) { .opts { grid-template-columns: 1fr 1fr; } }
+.opt { padding: 26px; }
+.opt h3 { font-family: "Playfair Display", serif; font-weight: 900; font-size: 26px; margin: 10px 0 6px; color: var(--yellow); }
+.opt p { color: rgba(234,255,243,0.78); font-size: 15px; margin: 0 0 18px; line-height: 1.5; }
+.opt .ic { font-size: 30px; }
+
+/* counter + quotes */
+.stripe { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: center; margin-top: 40px; }
+.counter { font-family: "Playfair Display", serif; font-weight: 900; font-size: 30px; color: var(--yellow); }
+.counter small { display: block; font-family: "Space Grotesk"; font-weight: 500; font-size: 13px; color: var(--cream); }
+.quote { font-style: italic; color: var(--cream); font-size: 15px; }
+
+/* studio */
+.studio { display: grid; grid-template-columns: 1fr; gap: 22px; padding: 26px 0 60px; }
+@media (min-width: 900px) { .studio { grid-template-columns: 420px 1fr; align-items: start; } }
+.panel { padding: 20px; }
+.preview { display: flex; justify-content: center; }
+.preview canvas { width: 100%; max-width: 460px; height: auto; border-radius: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.5); }
+.hint { color: rgba(234,255,243,0.6); font-size: 13px; text-align: center; margin-top: 10px; }
+.err { color: #ffb4c8; font-size: 14px; margin: 6px 0 0; }
+.title-row { display: flex; gap: 8px; align-items: end; }
+.title-row .field { flex: 1; margin-bottom: 0; }
+
+/* cropper */
+.crop-area { position: relative; width: 100%; height: 300px; background: #04120c; border-radius: 14px; overflow: hidden; }
+.crop-controls { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+.uploadbox { display: flex; flex-direction: column; align-items: center; gap: 6px; border: 2px dashed rgba(255,212,59,0.5); border-radius: 14px; padding: 26px; cursor: pointer; text-align: center; }
+.uploadbox:hover { border-color: var(--yellow); background: rgba(255,212,59,0.06); }
+
+.foot { text-align: center; color: rgba(234,255,243,0.55); font-size: 13px; padding: 30px 0 40px; }
+.foot b { color: var(--yellow); }
