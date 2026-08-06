@@ -419,7 +419,7 @@ function renderId(ctx){
   var soc=[D.gh?"gh/"+D.gh.replace(/^@/,""):"",D.x?"x/"+D.x.replace(/^@/,""):"",D.inh?"in/"+D.inh.replace(/^@/,""):""].filter(Boolean).join("     ");if(soc){ctx.fillStyle=th.accent;ctx.font='500 26px "Space Grotesk"';ctx.textAlign="center";ctx.fillText(soc,C,1130);}
   /* band: QR + number */
   var band=1200;ctx.fillStyle="rgba(255,255,255,.05)";H.rr(60,band,W-120,200,24);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.3);ctx.lineWidth=2;H.rr(60,band,W-120,200,24);ctx.stroke();
-  var qx=96,qy=band+25,qs=150;if(qrImg){ctx.fillStyle="#FFF7DF";H.rr(qx-6,qy-6,qs+12,qs+12,10);ctx.fill();ctx.drawImage(qrImg,qx,qy,qs,qs);}else{H.fauxQR(qx,qy,qs,th.c2,th.accent);}var tx=96+150+44;ctx.textAlign="left";ctx.fillStyle="rgba(255,255,255,.6)";ctx.font='500 22px "Space Grotesk"';ctx.fillText("BUILDER No.",tx,band+50);
+  var qx=96,qy=band+25,qs=150;if(qrImg){ctx.fillStyle="#FFF7DF";H.rr(qx-6,qy-6,qs+12,qs+12,10);ctx.fill();ctx.drawImage(qrImg,qx,qy,qs,qs);}else{H.fauxQR(qx,qy,qs,th.c2,th.accent);}var tx=96+150+44;ctx.textAlign="left";ctx.fillStyle="rgba(255,255,255,.6)";ctx.font='500 22px "Space Grotesk"';ctx.fillText("REGISTRATION ID",tx,band+50);
   ctx.fillStyle=th.accent;ctx.font='700 40px "Space Grotesk"';ctx.fillText(builderNo,tx,band+96);
   ctx.fillStyle="rgba(255,255,255,.55)";ctx.font='500 22px "Space Grotesk"';ctx.fillText(new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}),tx,band+134);
   ctx.fillStyle=th.accent2;ctx.font='900 28px "Playfair Display"';ctx.fillText("Hacking Goa's Future",tx,band+176);
@@ -507,7 +507,7 @@ function loadScript(src,cb){if(window.__l&&window.__l[src]){cb();return;}var s=d
 /* ============================ GENERATE ============================ */
 var LOAD_MSGS=["Uploading photo…","Optimizing image…","Detecting face…","Generating builder title…","Creating hacker identity…","Designing premium card…","Almost ready…","Welcome to HH Goa!"];
 function generate(){collect();
-  builderNo="HHG26-"+String(100000+(Math.abs(hashStr(D.name+D.email+Date.now()))%900000));
+  builderNo=genId();
   D.title=funTitle(D.role,TSEED);
   var ov=$("screen-loading");ov.classList.add("on");
   var i=0,lt=$("loadtext");lt.textContent=LOAD_MSGS[0];
@@ -515,11 +515,8 @@ function generate(){collect();
   setTimeout(function(){clearInterval(iv);lt.textContent=LOAD_MSGS[LOAD_MSGS.length-1];finishGenerate();},LOAD_MSGS.length*330+140);
 }
 function qrTarget(){
-  var g=D.gh?("https://github.com/"+D.gh.replace(/^@/,"")):"";
-  var w=D.web?(/^https?:/i.test(D.web)?D.web:("https://"+D.web)):"";
-  var xx=D.x?("https://x.com/"+D.x.replace(/^@/,"")):"";
   var origin=(typeof location!=="undefined"&&location.origin)?location.origin:"https://frameingoa.vercel.app";
-  return w||g||xx||(origin+"/?b="+encodeURIComponent(builderNo));
+  return origin+"/register?reg="+encodeURIComponent(builderNo)+(D.name?("&n="+encodeURIComponent(D.name)):"")+(D.role?("&r="+encodeURIComponent(D.role)):"");
 }
 function makeQR(text,cb){
   loadScript("https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js",function(){
@@ -549,6 +546,7 @@ function renderResult(){
   STATS.builders++;confetti();
 }
 function hashStr(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return h;}
+function genId(){var a="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",s="";for(var i=0;i<6;i++)s+=a[Math.floor(Math.random()*a.length)];return "HHG26-"+s;}
 
 /* ============================ RESULT ACTIONS ============================ */
 function bindResult(){
