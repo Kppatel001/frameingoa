@@ -436,96 +436,46 @@ function paintBase(ctx,H,w,h,th){
 }
 
 function renderId(ctx){
-  var H=mk(ctx),W=1080,Ht=1500,C=540;
-  var G="#14401f",G2="#0E5C2E",CREAM="#FBF3DE",PINK="#E5197E",YEL="#FFC629",WH="#fff";
-  function rr(x,y,w,h,r){H.rr(x,y,w,h,r);}
-  // background
-  ctx.fillStyle=CREAM;ctx.fillRect(0,0,W,Ht);
-  // faint dot texture
-  ctx.fillStyle="rgba(20,64,31,0.05)";for(var gy=60;gy<Ht;gy+=30)for(var gx=60;gx<W;gx+=30){ctx.beginPath();ctx.arc(gx,gy,1.3,0,7);ctx.fill();}
-  // double border
-  ctx.strokeStyle=G;ctx.lineWidth=20;rr(28,28,W-56,Ht-56,46);ctx.stroke();
-  ctx.strokeStyle=G;ctx.lineWidth=2;rr(56,56,W-112,Ht-112,34);ctx.stroke();
+  var th=themeById(D.theme),H=mk(ctx),W=1080,Ht=1350,C=540,M=120;
+  paintBase(ctx,H,W,Ht,th);
+  ctx.fillStyle="rgba(4,10,8,0.28)";ctx.fillRect(0,0,W,Ht);
+  ctx.strokeStyle=H.hexA(th.accent,.30);ctx.lineWidth=2;H.rr(18,18,W-36,Ht-36,36);ctx.stroke();
   ctx.textBaseline="alphabetic";
-  // ---- top pink tag ----
-  ctx.fillStyle=PINK;rr(C-78,20,156,176,30);ctx.fill();
-  ctx.font='30px serif';ctx.textAlign="center";ctx.fillStyle=YEL;ctx.fillText("🌴",C,74);
-  ctx.fillStyle=YEL;ctx.font='900 30px "Playfair Display"';ctx.fillText("HH",C,116);ctx.fillText("GOA",C,150);ctx.fillText("2026",C,184);
-  // ---- TL postage stamp ----
-  ctx.save();ctx.fillStyle=CREAM;ctx.strokeStyle=G;ctx.setLineDash([4,4]);ctx.lineWidth=3;rr(74,92,168,176,8);ctx.fill();ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle=G;ctx.font='900 24px "Space Grotesk"';ctx.textAlign="center";ctx.fillText("GOA",158,132);ctx.fillText("INDIA",158,158);
-  ctx.font='44px serif';ctx.fillText("🌅",158,214);ctx.restore();
-  ctx.strokeStyle=PINK;ctx.lineWidth=3;for(var w=0;w<3;w++){ctx.beginPath();for(var xx=0;xx<=90;xx+=6)ctx.lineTo(268+xx,150+w*14+Math.sin(xx/6)*4);ctx.stroke();}
-  // ---- TR round stamp ----
-  var sx=944,sy=176,srr=80;ctx.strokeStyle=G;ctx.lineWidth=3;ctx.beginPath();ctx.arc(sx,sy,srr,0,7);ctx.stroke();ctx.beginPath();ctx.arc(sx,sy,srr-8,0,7);ctx.stroke();
-  ctx.fillStyle=G;ctx.font='700 15px "Space Grotesk"';arcText(ctx,"BUILD IN GOA",sx,sy,srr-22,-Math.PI/2,1,1);arcText(ctx,"SHIP FROM PARADISE",sx,sy,srr-22,Math.PI/2,-1,1);
-  ctx.font='40px serif';ctx.textAlign="center";ctx.fillText("🌴",sx,sy+14);
-  // ---- wordmark ----
-  ctx.textAlign="center";ctx.font='38px serif';ctx.fillStyle=YEL;ctx.fillText("✦",300,340);ctx.fillStyle=PINK;ctx.fillText("✦",780,338);
-  var f='900 76px "Playfair Display"';ctx.font=f;
-  var t1="HACKER ",t3=" HOUSE";ctx.font='700 60px "Noto Sans Devanagari"';var wm=ctx.measureText("गोवा").width;ctx.font=f;var w1=ctx.measureText(t1).width,w3=ctx.measureText(t3).width;var tot=w1+wm+40+w3,startx=C-tot/2;
-  ctx.textAlign="left";ctx.fillStyle=G;ctx.fillText(t1,startx,428);
-  var mx=startx+w1;ctx.fillStyle=PINK;rr(mx,388,wm+30,56,16);ctx.fill();ctx.fillStyle=YEL;ctx.font='700 46px "Noto Sans Devanagari"';ctx.fillText("गोवा",mx+15,430);
-  ctx.font=f;ctx.fillStyle=G;ctx.fillText(t3,mx+wm+40,428);ctx.textAlign="center";
-  // ---- left vertical date ----
-  ctx.save();ctx.translate(70,660);ctx.rotate(-Math.PI/2);ctx.fillStyle=PINK;ctx.font='700 26px "Space Grotesk"';ctx.textAlign="center";ctx.fillText("28 – 31 OCT 2026",0,0);ctx.restore();
-  // ---- signpost ----
-  ctx.fillStyle=G;ctx.fillRect(150,600,10,290);
-  function sign(y,txt,fill,tcol){ctx.fillStyle=fill;ctx.beginPath();ctx.moveTo(120,y);ctx.lineTo(300,y);ctx.lineTo(324,y+26);ctx.lineTo(300,y+52);ctx.lineTo(120,y+52);ctx.closePath();ctx.fill();ctx.fillStyle=tcol;ctx.font='900 26px "Space Grotesk"';ctx.textAlign="center";ctx.fillText(txt,215,y+35);}
-  sign(636,"BUILD",YEL,G);sign(700,"SHIP",PINK,WH);sign(764,"REPEAT",G,YEL);
-  // ---- right tropical illustrations (approximate) ----
-  ctx.font='72px serif';ctx.textAlign="center";
-  ctx.fillText("🏡",930,720);ctx.font='60px serif';ctx.fillText("🛵",930,800);ctx.font='64px serif';ctx.fillText("🏄",840,760);ctx.fillText("🌴",1000,600);
-  // "LET'S BUILD!" sticker
-  ctx.save();ctx.translate(905,566);ctx.rotate(0.18);ctx.fillStyle=YEL;rr(-70,-34,140,68,12);ctx.fill();ctx.fillStyle=G;ctx.font='900 24px "Space Grotesk"';ctx.textAlign="center";ctx.fillText("LET'S",0,-4);ctx.fillText("BUILD!",0,24);ctx.restore();
-  // ---- circular photo ----
-  var pr=196,pcy=636;
-  // yellow outer ring
-  ctx.fillStyle=YEL;ctx.beginPath();ctx.arc(C,pcy,pr+22,0,7);ctx.fill();
-  // zig-zag ring
-  var teeth=64;ctx.strokeStyle=PINK;ctx.lineWidth=4;ctx.beginPath();for(var i2=0;i2<=teeth;i2++){var a=i2/teeth*Math.PI*2,rr2=pr+10+(i2%2?9:0);var px=C+Math.cos(a)*rr2,py=pcy+Math.sin(a)*rr2;if(i2===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.stroke();
-  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="#dfe3d8";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=G;ctx.font='500 30px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
-  ctx.strokeStyle=G;ctx.lineWidth=3;ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();
-  // ---- name banner ----
-  var name=(D.name||"YOUR NAME").toUpperCase().slice(0,22);
-  ctx.fillStyle=G;rr(C-320,902,640,74,20);ctx.fill();
-  ctx.fillStyle=YEL;ctx.font='24px serif';ctx.textAlign="center";ctx.fillText("✦",C-280,948);ctx.fillText("✦",C+280,948);
-  ctx.fillStyle=WH;var ns=H.fit(name,520,"900",'"Space Grotesk"',40,24);ctx.font='900 '+ns+'px "Space Grotesk"';ctx.fillText(name,C,952);
-  // ---- role pill ----
-  var role=(D.role||"BUILDER").toUpperCase().slice(0,26);
-  ctx.fillStyle=YEL;rr(C-210,992,420,58,16);ctx.fill();ctx.fillStyle=G;ctx.font='24px serif';ctx.fillText("⚡",C-170,1030);ctx.fillText("⚡",C+170,1030);
-  ctx.fillStyle=PINK;ctx.font='900 26px "Space Grotesk"';ctx.fillText(role,C,1032);
-  // ---- three columns ----
-  var colY=1104;ctx.font='900 20px "Space Grotesk"';
-  function colHead(cx,txt){ctx.fillStyle=PINK;ctx.textAlign="center";ctx.font='700 18px "Space Grotesk"';ctx.fillText("✦",cx-ctx.measureText(txt).width/2-16,colY);ctx.fillText("✦",cx+ctx.measureText(txt).width/2+16,colY);ctx.fillStyle=G;ctx.font='900 20px "Space Grotesk"';ctx.fillText(txt,cx,colY);}
-  // dashed dividers
-  ctx.strokeStyle="rgba(20,64,31,.35)";ctx.setLineDash([5,6]);ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(380,1092);ctx.lineTo(380,1330);ctx.moveTo(700,1092);ctx.lineTo(700,1330);ctx.stroke();ctx.setLineDash([]);
-  // col1 Builder Class + QR
-  colHead(228,"BUILDER CLASS");
-  var title=(D.title||funTitle(D.role,TSEED)).toUpperCase();ctx.fillStyle=PINK;ctx.font='900 26px "Space Grotesk"';wrapText(ctx,title,228,1150,250,30,2);
-  if(qrImg){ctx.fillStyle=WH;rr(150,1196,150,150,10);ctx.fill();ctx.drawImage(qrImg,158,1204,134,134);}else{H.fauxQR(158,1204,134,G,CREAM);}
-  // col2 Beach Bag
-  colHead(540,"BEACH BAG");
-  ctx.textAlign="left";ctx.font='34px serif';
-  var editor=(D.editor||"VS Code");
-  ctx.fillText("🥥",440,1168);ctx.fillText("💻",440,1224);ctx.fillText("🎧",440,1280);
-  ctx.fillStyle=G;ctx.font='700 22px "Space Grotesk"';ctx.fillText("COCONUT",492,1162);ctx.fillText(editor.toUpperCase().slice(0,10),492,1218);ctx.fillText("LO-FI BEATS",492,1274);
-  ctx.font='40px serif';ctx.textAlign="center";ctx.fillText("🌅",540,1330);
-  // col3 Currently Shipping + barcode + id
-  colHead(858,"CURRENTLY SHIPPING");
-  var ship=(D.why?D.why:"Building the Future").slice(0,40);ctx.fillStyle=PINK;ctx.font='900 24px "Space Grotesk"';wrapText(ctx,ship.toUpperCase(),858,1150,240,28,2);
-  ctx.strokeStyle=G;ctx.lineWidth=3;ctx.beginPath();for(var xw=0;xw<=180;xw+=6)ctx.lineTo(768+xw,1196+Math.sin(xw/6)*4);ctx.stroke();
-  ctx.fillStyle=G;ctx.font='900 18px "Space Grotesk"';ctx.textAlign="center";ctx.fillText("BUILDER ID",858,1252);
-  var shortId="#HH-GOA-"+(1000+Math.abs(hashStr(builderNo))%9000);ctx.fillStyle=PINK;ctx.font='700 20px "Space Grotesk"';ctx.fillText(shortId,858,1280);
-  // barcode
-  var bxp=760,bw3=200,x2=bxp;ctx.fillStyle=G;while(x2<bxp+bw3){var bw4=1+ (Math.floor((x2*7)%4));ctx.fillRect(x2,1298,bw4,48);x2+=bw4+ (1+Math.floor((x2*5)%3));}
-  // ---- sailboat + waves ----
-  ctx.font='46px serif';ctx.textAlign="center";ctx.fillText("⛵",120,1400);
-  ctx.strokeStyle=G;ctx.lineWidth=3;for(var wv=0;wv<2;wv++){ctx.beginPath();for(var xv=90;xv<=990;xv+=10)ctx.lineTo(xv,1418+wv*12+Math.sin(xv/22)*5);ctx.stroke();}
-  // ---- footer ribbon ----
-  ctx.fillStyle=PINK;rr(C-260,1430,520,56,14);ctx.fill();
-  ctx.fillStyle=YEL;ctx.font='20px serif';ctx.fillText("✦",C-170,1468);ctx.fillText("✦",C+170,1468);
-  ctx.fillStyle=WH;ctx.font='900 30px "Space Grotesk"';ctx.fillText("#FRAMEINGOA",C,1470);
+  // side rails fill the empty strips
+  function rail(cx,label){var g=ctx.createLinearGradient(0,160,0,Ht-160);g.addColorStop(0,th.accent);g.addColorStop(1,th.accent2);ctx.fillStyle=g;H.rr(cx-4,160,8,Ht-320,4);ctx.fill();ctx.fillStyle=H.hexA(th.accent,.55);for(var yy=190;yy<Ht-170;yy+=50){ctx.beginPath();ctx.arc(cx,yy,2.5,0,7);ctx.fill();}ctx.save();ctx.translate(cx-18,Ht/2);ctx.rotate(-Math.PI/2);ctx.fillStyle=H.hexA(th.ink,.75);ctx.font='700 16px "Space Grotesk"';ctx.textAlign="center";ctx.fillText(label,0,0);ctx.restore();}
+  rail(70,"HH GOA 2026  ·  BUILDER IDENTITY");
+  rail(W-70,"#FrameInGoa   ·   HACK GOA");
+  // HEADER
+  ctx.textAlign="center";ctx.fillStyle=th.accent;ctx.font='900 44px "Playfair Display"';H.spaced("HH GOA 2026",C,84,2);
+  var bw=150,bh=40,bx=C-bw/2,by=98;ctx.fillStyle=th.accent2;H.rr(bx,by,bw,bh,20);ctx.fill();ctx.fillStyle="#fff";ctx.font='700 22px "Noto Sans Devanagari"';ctx.fillText("गोवा",C,by+28);
+  ctx.fillStyle=th.ink;ctx.font='600 16px "Space Grotesk"';H.spaced("BUILDER IDENTITY",C,166,6);
+  ctx.strokeStyle=H.hexA(th.ink,.14);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(M,186);ctx.lineTo(W-M,186);ctx.stroke();
+  // HERO
+  var pr=146,pcy=352;
+  ctx.save();ctx.shadowColor=H.hexA(th.accent,.45);ctx.shadowBlur=40;ctx.fillStyle=th.c2;ctx.beginPath();ctx.arc(C,pcy,pr+6,0,7);ctx.fill();ctx.restore();
+  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="rgba(255,255,255,.06)";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=th.ink;ctx.font='500 26px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
+  var ring=ctx.createLinearGradient(C-pr,pcy-pr,C+pr,pcy+pr);ring.addColorStop(0,th.accent);ring.addColorStop(1,th.accent2);ctx.strokeStyle=ring;ctx.lineWidth=6;ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();
+  ctx.textAlign="center";
+  var name=(D.name||"Your Name").slice(0,30);var ns=H.fit(name,760,"900",'"Playfair Display"',56,32);ctx.fillStyle="#fff";ctx.font='900 '+ns+'px "Playfair Display"';ctx.fillText(name,C,pcy+pr+64);
+  var sub=[(D.role||""),(D.city||"")].filter(Boolean).join("   ·   ").toUpperCase();if(sub){ctx.fillStyle=H.hexA(th.ink,.85);ctx.font='600 19px "Space Grotesk"';H.spaced(sub,C,pcy+pr+98,2);}
+  var title=(D.title||funTitle(D.role,TSEED)).toUpperCase().slice(0,26);ctx.font='700 21px "Space Grotesk"';var tw=ctx.measureText(title).width,pw=tw+46,ph=42,plx=C-pw/2,ply=pcy+pr+118;ctx.fillStyle=H.hexA(th.accent,.12);H.rr(plx,ply,pw,ph,21);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.85);ctx.lineWidth=1.5;H.rr(plx,ply,pw,ph,21);ctx.stroke();ctx.fillStyle=th.accent;ctx.fillText(title,C,ply+28);
+  var y=ply+ph+36;
+  // ABOUT
+  var bio=D.why?(D.why.length>120?D.why.slice(0,117)+"…":D.why):"";
+  if(bio){ctx.fillStyle="rgba(255,255,255,.72)";ctx.font='400 21px "Space Grotesk"';ctx.textAlign="center";wrapText(ctx,bio,C,y,W-2*M-20,28,2);y+=64;}
+  ctx.strokeStyle=H.hexA(th.ink,.12);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(M,y);ctx.lineTo(W-M,y);ctx.stroke();y+=36;
+  // BADGES
+  ctx.textAlign="center";ctx.fillStyle=H.hexA(th.ink,.5);ctx.font='600 14px "Space Grotesk"';H.spaced("ACHIEVEMENTS",C,y,3);y+=16;
+  var bd=badgesFor();ctx.font='600 20px "Space Grotesk"';var bgp=12,bt=0,bw2=[];for(var k=0;k<bd.length;k++){var bx2=ctx.measureText(bd[k]).width+30;bw2.push(bx2);bt+=bx2+bgp;}bt-=bgp;var bxx=C-bt/2,byy=y+6;for(var m=0;m<bd.length;m++){ctx.fillStyle=H.hexA(th.accent2,.16);H.rr(bxx,byy,bw2[m],44,22);ctx.fill();ctx.strokeStyle=H.hexA(th.accent2,.4);ctx.lineWidth=1;H.rr(bxx,byy,bw2[m],44,22);ctx.stroke();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.fillText(bd[m],bxx+15,byy+29);bxx+=bw2[m]+bgp;}ctx.textAlign="center";y=byy+70;
+  // QUOTE
+  ctx.fillStyle=H.hexA(th.ink,.7);ctx.font='italic 400 23px "Space Grotesk"';ctx.fillText("“"+aiQuote((D.name||"").length+(D.role||"").length)+"”",C,y);
+  // QR PANEL
+  var band=Ht-256;ctx.fillStyle="rgba(255,255,255,.045)";H.rr(M-6,band,W-2*(M-6),150,22);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.25);ctx.lineWidth=1.5;H.rr(M-6,band,W-2*(M-6),150,22);ctx.stroke();
+  var qx=M+10,qy=band+20,qs=110;if(qrImg){ctx.fillStyle="#FFF7DF";H.rr(qx-6,qy-6,qs+12,qs+12,10);ctx.fill();ctx.drawImage(qrImg,qx,qy,qs,qs);}else{H.fauxQR(qx,qy,qs,th.c2,th.accent);}
+  var tx=qx+qs+30;ctx.textAlign="left";ctx.fillStyle="#fff";ctx.font='700 24px "Space Grotesk"';ctx.fillText("Scan to register",tx,band+52);ctx.fillStyle=H.hexA(th.ink,.6);ctx.font='500 18px "Space Grotesk"';ctx.fillText("Your unique HH Goa builder pass",tx,band+82);ctx.fillStyle=th.accent2;ctx.font='900 22px "Playfair Display"';ctx.fillText("Hacking Goa’s Future",tx,band+116);
+  // FOOTER
+  ctx.textAlign="center";ctx.fillStyle=th.accent;ctx.font='700 20px "Space Grotesk"';ctx.fillText("Ready to Build.   Ready to Ship.   Ready for HH Goa.",C,Ht-62);
+  ctx.fillStyle=H.hexA(th.ink,.6);ctx.font='600 18px "Space Grotesk"';ctx.fillText("#FrameInGoa    #HHGoa2026",C,Ht-38);
 }
 function renderPfp(ctx){
   var th=themeById(D.theme),H=mk(ctx),S=1080,C=540;
