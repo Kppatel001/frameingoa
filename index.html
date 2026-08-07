@@ -469,6 +469,10 @@ function renderId(ctx){
   var bd=badgesFor();ctx.font='600 20px "Space Grotesk"';var bgp=12,bt=0,bw2=[];for(var k=0;k<bd.length;k++){var bx2=ctx.measureText(bd[k]).width+30;bw2.push(bx2);bt+=bx2+bgp;}bt-=bgp;var bxx=C-bt/2,byy=y+6;for(var m=0;m<bd.length;m++){ctx.fillStyle=H.hexA(th.accent2,.16);H.rr(bxx,byy,bw2[m],44,22);ctx.fill();ctx.strokeStyle=H.hexA(th.accent2,.4);ctx.lineWidth=1;H.rr(bxx,byy,bw2[m],44,22);ctx.stroke();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.fillText(bd[m],bxx+15,byy+29);bxx+=bw2[m]+bgp;}ctx.textAlign="center";y=byy+70;
   // QUOTE
   ctx.fillStyle=H.hexA(th.ink,.7);ctx.font='italic 400 23px "Space Grotesk"';ctx.fillText("“"+aiQuote((D.name||"").length+(D.role||"").length)+"”",C,y);
+  // BUILDER DETAILS (fills the mid space)
+  var dy=y+34;var items=[["EVENT","28–31 Oct 2026"],["LOCATION",(D.city||"Goa, India")],["STATUS","Verified Builder"]];
+  var cw=248,ch=92,cg=18,gx=C-(cw*3+cg*2)/2;
+  for(var di=0;di<3;di++){var cxp=gx+di*(cw+cg);ctx.fillStyle="rgba(255,255,255,.05)";H.rr(cxp,dy,cw,ch,16);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.22);ctx.lineWidth=1.2;H.rr(cxp,dy,cw,ch,16);ctx.stroke();ctx.textAlign="center";ctx.fillStyle=H.hexA(th.ink,.5);ctx.font='600 13px "Space Grotesk"';H.spaced(items[di][0],cxp+cw/2,dy+30,2);ctx.fillStyle="#fff";var vv=items[di][1];var vs=H.fit(vv,cw-26,"700",'"Space Grotesk"',22,13);ctx.font='700 '+vs+'px "Space Grotesk"';ctx.fillText(vv,cxp+cw/2,dy+68);}
   // QR PANEL
   var band=Ht-256;ctx.fillStyle="rgba(255,255,255,.045)";H.rr(M-6,band,W-2*(M-6),150,22);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.25);ctx.lineWidth=1.5;H.rr(M-6,band,W-2*(M-6),150,22);ctx.stroke();
   var qx=M+10,qy=band+20,qs=110;if(qrImg){ctx.fillStyle="#FFF7DF";H.rr(qx-6,qy-6,qs+12,qs+12,10);ctx.fill();ctx.drawImage(qrImg,qx,qy,qs,qs);}else{H.fauxQR(qx,qy,qs,th.c2,th.accent);}
