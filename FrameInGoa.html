@@ -175,11 +175,6 @@ input[type=range]{accent-color:var(--pink);flex:1}
         <button class="btn btn-grad btn-lg" onclick="startFlow('id')">Create My Builder ID</button>
         <button class="btn btn-glass btn-lg" onclick="startFlow('pfp')">Generate PFP Frame</button>
       </div>
-      <div class="stats glass">
-        <div class="stat"><div class="n" id="s-builders">0</div><div class="l">Builders Generated</div></div>
-        <div class="stat"><div class="n" id="s-downloads">0</div><div class="l">Downloads</div></div>
-        <div class="stat"><div class="n" id="s-shares">0</div><div class="l">Shares on X</div></div>
-      </div>
       <div class="feat">
         <span><i class="c">✓</i> Face-safe smart crop</span>
         <span><i class="c">✓</i> 10 premium themes</span>
@@ -558,7 +553,7 @@ function init(){
   var tc=$("f-tech");TECH.forEach(function(t){var el=document.createElement("div");el.className="chip";el.textContent=t;el.onclick=function(){var i=D.tech.indexOf(t);if(i>=0){D.tech.splice(i,1);el.classList.remove("on");}else{D.tech.push(t);el.classList.add("on");}};tc.appendChild(el);});
   var tg=$("f-themes");THEMES.forEach(function(th){var el=document.createElement("div");el.className="theme"+(th.id===D.theme?" on":"");el.innerHTML='<div class="sw" style="background:linear-gradient(135deg,'+th.c1+','+th.c2+')"><div style="height:100%;display:flex;align-items:center;justify-content:center;gap:6px"><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent+'"></span><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent2+'"></span></div></div><div class="nm" style="color:'+th.ink+'">'+th.name+'</div>';el.onclick=function(){D.theme=th.id;[].forEach.call(tg.children,function(c){c.classList.remove("on");});el.classList.add("on");drawPhotoPreview();};tg.appendChild(el);});
   var why=$("f-why");why.addEventListener("input",function(){$("why-count").textContent=why.value.length;});
-  bindPhoto();bindResult();animateStats();
+  bindPhoto();bindResult();
 }
 /* stats */
 function animateStats(){[["s-builders",STATS.builders],["s-downloads",STATS.downloads],["s-shares",STATS.shares]].forEach(function(p){var el=$(p[0]),tgt=p[1],c=0;var iv=setInterval(function(){c+=Math.ceil((tgt-c)/14);if(c>=tgt){c=tgt;clearInterval(iv);}el.textContent=c.toLocaleString();},32);});}
