@@ -377,6 +377,18 @@ var TITLE_POOLS=[
   [/student|beginner|fresher/i,["Future Founder","Rookie Renegade","Next-Gen Hacker"]]
 ];
 function funTitle(role,seed){var pool=["Chaos Coder","Idea Machine","Midnight Shipper","Builder Supreme"];for(var i=0;i<TITLE_POOLS.length;i++){if(TITLE_POOLS[i][0].test(role)){pool=TITLE_POOLS[i][1];break;}}return pool[Math.abs(seed)%pool.length];}
+var SKILL_ICON={"React":"⚛","Flutter":"📱","Next.js":"▲","Node":"🟢","Node.js":"🟢","Python":"🐍","Java":"☕","Go":"🐹","Rust":"🦀","C++":"➕","PHP":"🐘","Laravel":"🎯","Firebase":"🔥","Supabase":"⚡","MongoDB":"🍃","PostgreSQL":"🐘","Docker":"🐳","AWS":"☁","Azure":"☁","Google Cloud":"☁","TensorFlow":"🧠","PyTorch":"🔥","Kubernetes":"☸","Git":"🔧","GitHub":"🐙","AI":"🤖"};
+function skillIcon(n){return SKILL_ICON[n]||"◆";}
+var AIQUOTES=["Building the future one commit at a time.","Ideas become reality through execution.","Code. Learn. Ship. Repeat.","Talk less, deploy more. Ship in public.","Done beats perfect — every single time."];
+function aiQuote(seed){return AIQUOTES[Math.abs(seed)%AIQUOTES.length];}
+function badgesFor(){var b=["🚀 First Hackathon"];var r=(D.role||"").toLowerCase(),t=(D.tech||[]).join(" ").toLowerCase(),x=r+" "+t;
+  if(/ai|ml|prompt|neural|tensor|pytorch/.test(x))b.push("🤖 AI Builder");
+  if(/flutter|mobile|android|ios|react native/.test(x))b.push("📱 Mobile Dev");
+  if(/git|github|open/.test(x))b.push("🔥 Open Source");
+  if(/founder|product|pm|manager/.test(x))b.push("🏆 Problem Solver");
+  if(b.length<3)b.push("⚡ Fast Learner");
+  return b.slice(0,4);}
+function wrapText(ctx,text,cx,y,maxW,lh,maxLines){var words=String(text).split(" "),line="",lines=[];for(var i=0;i<words.length;i++){var tt=line?line+" "+words[i]:words[i];if(ctx.measureText(tt).width>maxW&&line){lines.push(line);line=words[i];}else line=tt;}if(line)lines.push(line);lines=lines.slice(0,maxLines||2);for(var k=0;k<lines.length;k++)ctx.fillText(lines[k],cx,y+k*lh);}
 
 /* form state */
 var D={name:"",email:"",org:"",city:"",country:"",role:"Student",tech:[],lang:"",editor:"",years:"",aitool:"",dream:"",first:"Yes",why:"",gh:"",x:"",inh:"",web:"",theme:"classic"};
@@ -430,36 +442,42 @@ function paintBase(ctx,H,w,h,th){
 }
 
 function renderId(ctx){
-  var th=themeById(D.theme),H=mk(ctx),W=1200,Ht=1500,C=600;
+  var th=themeById(D.theme),H=mk(ctx),W=1080,Ht=1350,C=540;
   paintBase(ctx,H,W,Ht,th);
-  ctx.strokeStyle=H.hexA(th.accent,.5);ctx.lineWidth=3;H.rr(26,26,W-52,Ht-52,40);ctx.stroke();
-  ctx.textAlign="center";ctx.textBaseline="alphabetic";
-  ctx.fillStyle=th.accent;ctx.font='900 60px "Playfair Display"';H.spaced("HACKER HOUSE",C,126,3);
-  var bw=160,bh=56,bx=C-bw/2,by=146;ctx.fillStyle=th.accent2;H.rr(bx,by,bw,bh,28);ctx.fill();ctx.fillStyle="#fff";ctx.font='700 34px "Noto Sans Devanagari"';ctx.fillText("गोवा",C,by+40);
-  ctx.fillStyle=th.ink;ctx.font='600 24px "Space Grotesk"';H.spaced("2026   ·   BUILDER PASS",C,252,4);
-  /* photo */
-  var pr=232,pcy=520;ctx.save();ctx.shadowColor="rgba(0,0,0,.5)";ctx.shadowBlur=40;ctx.shadowOffsetY=12;ctx.fillStyle=th.c2;ctx.beginPath();ctx.arc(C,pcy,pr+12,0,7);ctx.fill();ctx.restore();
-  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="rgba(255,255,255,.06)";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=th.ink;ctx.font='500 32px "Space Grotesk"';ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
-  ctx.strokeStyle=th.accent;ctx.lineWidth=8;ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();ctx.strokeStyle=th.accent2;ctx.lineWidth=3;ctx.beginPath();ctx.arc(C,pcy,pr+12,0,7);ctx.stroke();
-  /* name */
-  var name=(D.name||"Your Name").slice(0,34);ctx.textAlign="center";var ns=H.fit(name,1000,"900",'"Playfair Display"',84,44);ctx.fillStyle=th.accent;ctx.font='900 '+ns+'px "Playfair Display"';ctx.fillText(name,C,858);
-  var rc=[D.role,D.city].filter(Boolean).join("  ·  ").slice(0,54);if(rc){ctx.fillStyle=th.ink;ctx.font='500 32px "Space Grotesk"';ctx.fillText(rc,C,904);}
-  /* title pill */
-  var title=D.title||funTitle(D.role,TSEED);var t=title.toUpperCase().slice(0,30);ctx.font='700 32px "Space Grotesk"';var tw=ctx.measureText(t).width,pw=tw+66,ph=60,plx=C-pw/2,ply=938;var pg=ctx.createLinearGradient(plx,0,plx+pw,0);pg.addColorStop(0,th.accent2);pg.addColorStop(1,th.accent);ctx.fillStyle=pg;H.rr(plx,ply,pw,ph,30);ctx.fill();ctx.fillStyle="#0a0a0a";ctx.fillText(t,C,ply+41);
-  /* tech chips */
-  var chips=D.tech.slice(0,7);if(chips.length){ctx.font='500 24px "Space Grotesk"';var gap=14,tot=0,ws=[];for(var i=0;i<chips.length;i++){var cw=ctx.measureText(chips[i]).width+30;ws.push(cw);tot+=cw+gap;}tot-=gap;var sx=C-tot/2,cy=1040;for(var i2=0;i2<chips.length;i2++){ctx.fillStyle=H.hexA(th.accent,.14);H.rr(sx,cy,ws[i2],42,21);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.4);ctx.lineWidth=1;H.rr(sx,cy,ws[i2],42,21);ctx.stroke();ctx.fillStyle=th.ink;ctx.textAlign="center";ctx.fillText(chips[i2],sx+ws[i2]/2,cy+28);sx+=ws[i2]+gap;}}
-  /* socials */
-  var soc=[D.gh?"gh/"+D.gh.replace(/^@/,""):"",D.x?"x/"+D.x.replace(/^@/,""):"",D.inh?"in/"+D.inh.replace(/^@/,""):""].filter(Boolean).join("     ");if(soc){ctx.fillStyle=th.accent;ctx.font='500 26px "Space Grotesk"';ctx.textAlign="center";ctx.fillText(soc,C,1130);}
-  /* band: QR + number */
-  var band=1200;ctx.fillStyle="rgba(255,255,255,.05)";H.rr(60,band,W-120,200,24);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.3);ctx.lineWidth=2;H.rr(60,band,W-120,200,24);ctx.stroke();
-  var qx=96,qy=band+25,qs=150;if(qrImg){ctx.fillStyle="#FFF7DF";H.rr(qx-6,qy-6,qs+12,qs+12,10);ctx.fill();ctx.drawImage(qrImg,qx,qy,qs,qs);}else{H.fauxQR(qx,qy,qs,th.c2,th.accent);}var tx=96+150+44;ctx.textAlign="left";ctx.fillStyle="rgba(255,255,255,.6)";ctx.font='500 22px "Space Grotesk"';ctx.fillText("SCAN TO REGISTER",tx,band+56);
-  ctx.fillStyle="rgba(255,255,255,.55)";ctx.font='500 22px "Space Grotesk"';ctx.fillText(new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"}),tx,band+104);
-  ctx.fillStyle=th.accent2;ctx.font='900 28px "Playfair Display"';ctx.fillText("Hacking Goa's Future",tx,band+150);
-  /* story badge */
-  if(D.why){ctx.textAlign="center";ctx.fillStyle=H.hexA(th.accent,.16);var sbw=340,sbx=C-sbw/2;H.rr(sbx,1418,sbw,44,22);ctx.fill();ctx.fillStyle=th.accent;ctx.font='600 22px "Space Grotesk"';ctx.fillText("★ Builder Story Included",C,1447);}
-  else{ctx.textAlign="center";ctx.fillStyle=H.hexA(th.ink,.7);ctx.font='700 24px "Space Grotesk"';ctx.fillText("#FrameInGoa",C,1450);}
+  ctx.strokeStyle=H.hexA(th.accent,.45);ctx.lineWidth=2;H.rr(20,20,W-40,Ht-40,34);ctx.stroke();
+  ctx.textBaseline="alphabetic";
+  // HEADER
+  ctx.textAlign="center";ctx.fillStyle=th.accent;ctx.font='900 46px "Playfair Display"';H.spaced("HH GOA 2026",C,84,2);
+  ctx.fillStyle=th.ink;ctx.font='600 19px "Space Grotesk"';H.spaced("BUILDER IDENTITY",C,114,6);
+  ctx.strokeStyle=H.hexA(th.accent,.25);ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(80,146);ctx.lineTo(W-80,146);ctx.stroke();
+  // HERO photo
+  var pr=150,pcy=316;
+  ctx.save();ctx.shadowColor=H.hexA(th.accent,.55);ctx.shadowBlur=48;ctx.fillStyle=th.c2;ctx.beginPath();ctx.arc(C,pcy,pr+10,0,7);ctx.fill();ctx.restore();
+  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="rgba(255,255,255,.06)";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=th.ink;ctx.font='500 26px "Space Grotesk"';ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
+  var ring=ctx.createLinearGradient(C-pr,pcy-pr,C+pr,pcy+pr);ring.addColorStop(0,th.accent);ring.addColorStop(1,th.accent2);ctx.strokeStyle=ring;ctx.lineWidth=7;ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();
+  // name / role / title
+  var name=(D.name||"Your Name").slice(0,32);ctx.textAlign="center";var ns=H.fit(name,880,"900",'"Playfair Display"',58,34);ctx.fillStyle="#fff";ctx.font='900 '+ns+'px "Playfair Display"';ctx.fillText(name,C,pcy+pr+70);
+  var rc=[D.role,D.city].filter(Boolean).join("  \u00b7  ").slice(0,50);if(rc){ctx.fillStyle=th.ink;ctx.font='500 25px "Space Grotesk"';ctx.fillText(rc,C,pcy+pr+104);}
+  var title=(D.title||funTitle(D.role,TSEED)).toUpperCase().slice(0,28);ctx.font='700 24px "Space Grotesk"';var tw=ctx.measureText(title).width,pw=tw+52,ph=48,plx=C-pw/2,ply=pcy+pr+126;var pg=ctx.createLinearGradient(plx,0,plx+pw,0);pg.addColorStop(0,th.accent2);pg.addColorStop(1,th.accent);ctx.fillStyle=pg;H.rr(plx,ply,pw,ph,24);ctx.fill();ctx.fillStyle="#0a0a0a";ctx.fillText(title,C,ply+32);
+  var y=ply+ph+28;
+  // ABOUT
+  var bio=D.why?(D.why.length>120?D.why.slice(0,117)+"\u2026":D.why):"";
+  if(bio){ctx.fillStyle="rgba(255,255,255,.05)";H.rr(70,y,W-140,74,20);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.2);ctx.lineWidth=1.5;H.rr(70,y,W-140,74,20);ctx.stroke();ctx.fillStyle=th.ink;ctx.font='400 22px "Space Grotesk"';ctx.textAlign="center";wrapText(ctx,bio,C,y+32,W-210,28,2);y+=96;}
+  // SKILLS chips w/ icons
+  var chips=(D.tech||[]).slice(0,6);
+  if(chips.length){ctx.font='600 22px "Space Grotesk"';var gap=12,total=0,widths=[];for(var i=0;i<chips.length;i++){var lab=skillIcon(chips[i])+" "+chips[i];var wch=ctx.measureText(lab).width+34;widths.push(wch);total+=wch+gap;}total-=gap;var rx=C-total/2,ry=y+6;for(var j=0;j<chips.length;j++){var lb=skillIcon(chips[j])+" "+chips[j];ctx.fillStyle=H.hexA(th.accent,.14);H.rr(rx,ry,widths[j],46,23);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.4);ctx.lineWidth=1;H.rr(rx,ry,widths[j],46,23);ctx.stroke();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.fillText(lb,rx+17,ry+30);rx+=widths[j]+gap;}ctx.textAlign="center";y=ry+68;}
+  // BADGES
+  var bd=badgesFor();ctx.font='600 20px "Space Grotesk"';var bg=12,bt=0,bw=[];for(var k=0;k<bd.length;k++){var bx=ctx.measureText(bd[k]).width+28;bw.push(bx);bt+=bx+bg;}bt-=bg;var bxx=C-bt/2;for(var m=0;m<bd.length;m++){ctx.fillStyle=H.hexA(th.accent2,.16);H.rr(bxx,y,bw[m],42,21);ctx.fill();ctx.strokeStyle=H.hexA(th.accent2,.4);ctx.lineWidth=1;H.rr(bxx,y,bw[m],42,21);ctx.stroke();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.fillText(bd[m],bxx+14,y+27);bxx+=bw[m]+bg;}ctx.textAlign="center";y+=62;
+  // QUOTE
+  ctx.fillStyle="rgba(252,233,168,.85)";ctx.font='italic 500 24px "Space Grotesk"';ctx.fillText('\u201c'+aiQuote(name.length+(D.role||"").length)+'\u201d',C,y+4);
+  // QR PANEL
+  var band=Ht-262;ctx.fillStyle="rgba(255,255,255,.05)";H.rr(70,band,W-140,150,22);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.25);ctx.lineWidth=1.5;H.rr(70,band,W-140,150,22);ctx.stroke();
+  var qx=98,qy=band+20,qs=110;if(qrImg){ctx.fillStyle="#FFF7DF";H.rr(qx-6,qy-6,qs+12,qs+12,10);ctx.fill();ctx.drawImage(qrImg,qx,qy,qs,qs);}else{H.fauxQR(qx,qy,qs,th.c2,th.accent);}
+  var tx=qx+qs+34;ctx.textAlign="left";ctx.fillStyle="#fff";ctx.font='700 25px "Space Grotesk"';ctx.fillText("Scan to register",tx,band+50);ctx.fillStyle="rgba(255,255,255,.6)";ctx.font='500 19px "Space Grotesk"';ctx.fillText("Your unique HH Goa builder pass",tx,band+80);ctx.fillStyle=th.accent2;ctx.font='900 24px "Playfair Display"';ctx.fillText("Hacking Goa\u2019s Future",tx,band+116);
+  // FOOTER
+  ctx.textAlign="center";ctx.fillStyle=th.accent;ctx.font='700 21px "Space Grotesk"';ctx.fillText("Ready to Build.   Ready to Ship.   Ready for HH Goa.",C,Ht-66);
+  ctx.fillStyle="rgba(252,233,168,.7)";ctx.font='600 20px "Space Grotesk"';ctx.fillText("#FrameInGoa    #HHGoa2026",C,Ht-38);
 }
-
 function renderPfp(ctx){
   var th=themeById(D.theme),H=mk(ctx),S=1080,C=540;
   paintBase(ctx,H,S,S,th);
