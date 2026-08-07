@@ -442,41 +442,46 @@ function paintBase(ctx,H,w,h,th){
 }
 
 function renderId(ctx){
-  var th=themeById(D.theme),H=mk(ctx),W=1080,Ht=1350,C=540;
+  var th=themeById(D.theme),H=mk(ctx),W=1080,Ht=1350,C=540,M=84;
   paintBase(ctx,H,W,Ht,th);
-  ctx.strokeStyle=H.hexA(th.accent,.45);ctx.lineWidth=2;H.rr(20,20,W-40,Ht-40,34);ctx.stroke();
+  ctx.fillStyle="rgba(4,10,8,0.34)";ctx.fillRect(0,0,W,Ht);
+  ctx.strokeStyle=H.hexA(th.accent,.30);ctx.lineWidth=2;H.rr(18,18,W-36,Ht-36,36);ctx.stroke();
   ctx.textBaseline="alphabetic";
-  // HEADER
-  ctx.textAlign="center";ctx.fillStyle=th.accent;ctx.font='900 46px "Playfair Display"';H.spaced("HH GOA 2026",C,84,2);
-  ctx.fillStyle=th.ink;ctx.font='600 19px "Space Grotesk"';H.spaced("BUILDER IDENTITY",C,114,6);
-  ctx.strokeStyle=H.hexA(th.accent,.25);ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(80,146);ctx.lineTo(W-80,146);ctx.stroke();
-  // HERO photo
-  var pr=150,pcy=316;
-  ctx.save();ctx.shadowColor=H.hexA(th.accent,.55);ctx.shadowBlur=48;ctx.fillStyle=th.c2;ctx.beginPath();ctx.arc(C,pcy,pr+10,0,7);ctx.fill();ctx.restore();
-  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="rgba(255,255,255,.06)";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=th.ink;ctx.font='500 26px "Space Grotesk"';ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
-  var ring=ctx.createLinearGradient(C-pr,pcy-pr,C+pr,pcy+pr);ring.addColorStop(0,th.accent);ring.addColorStop(1,th.accent2);ctx.strokeStyle=ring;ctx.lineWidth=7;ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();
-  // name / role / title
-  var name=(D.name||"Your Name").slice(0,32);ctx.textAlign="center";var ns=H.fit(name,880,"900",'"Playfair Display"',58,34);ctx.fillStyle="#fff";ctx.font='900 '+ns+'px "Playfair Display"';ctx.fillText(name,C,pcy+pr+70);
-  var rc=[D.role,D.city].filter(Boolean).join("  \u00b7  ").slice(0,50);if(rc){ctx.fillStyle=th.ink;ctx.font='500 25px "Space Grotesk"';ctx.fillText(rc,C,pcy+pr+104);}
-  var title=(D.title||funTitle(D.role,TSEED)).toUpperCase().slice(0,28);ctx.font='700 24px "Space Grotesk"';var tw=ctx.measureText(title).width,pw=tw+52,ph=48,plx=C-pw/2,ply=pcy+pr+126;var pg=ctx.createLinearGradient(plx,0,plx+pw,0);pg.addColorStop(0,th.accent2);pg.addColorStop(1,th.accent);ctx.fillStyle=pg;H.rr(plx,ply,pw,ph,24);ctx.fill();ctx.fillStyle="#0a0a0a";ctx.fillText(title,C,ply+32);
-  var y=ply+ph+28;
+  // TOP BAR
+  ctx.textAlign="left";ctx.fillStyle=th.accent;ctx.font='900 30px "Playfair Display"';ctx.fillText("HACKER HOUSE",M,86);
+  var lw=ctx.measureText("HACKER HOUSE").width;var gbx=M+lw+14,gby=64,gbw=84,gbh=32;ctx.fillStyle=th.accent2;H.rr(gbx,gby,gbw,gbh,16);ctx.fill();ctx.fillStyle="#fff";ctx.font='700 20px "Noto Sans Devanagari"';ctx.textAlign="center";ctx.fillText("गोवा",gbx+gbw/2,gby+23);
+  ctx.textAlign="right";ctx.fillStyle=H.hexA(th.ink,.7);ctx.font='600 16px "Space Grotesk"';ctx.fillText("BUILDER PASS · 2026",W-M,84);
+  ctx.strokeStyle=H.hexA(th.ink,.14);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(M,112);ctx.lineTo(W-M,112);ctx.stroke();
+  // HERO
+  var pr=138,pcy=296;
+  ctx.save();ctx.shadowColor=H.hexA(th.accent,.4);ctx.shadowBlur=38;ctx.fillStyle=th.c2;ctx.beginPath();ctx.arc(C,pcy,pr+6,0,7);ctx.fill();ctx.restore();
+  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="rgba(255,255,255,.06)";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=th.ink;ctx.font='500 24px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
+  var ring=ctx.createLinearGradient(C-pr,pcy-pr,C+pr,pcy+pr);ring.addColorStop(0,th.accent);ring.addColorStop(1,th.accent2);ctx.strokeStyle=ring;ctx.lineWidth=5;ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();
+  ctx.textAlign="center";
+  var name=(D.name||"Your Name").slice(0,32);var ns=H.fit(name,860,"900",'"Playfair Display"',56,32);ctx.fillStyle="#fff";ctx.font='900 '+ns+'px "Playfair Display"';ctx.fillText(name,C,pcy+pr+64);
+  var sub=[(D.role||""),(D.city||"")].filter(Boolean).join("   ·   ").toUpperCase();if(sub){ctx.fillStyle=H.hexA(th.ink,.85);ctx.font='600 19px "Space Grotesk"';H.spaced(sub,C,pcy+pr+98,2);}
+  var title=(D.title||funTitle(D.role,TSEED)).toUpperCase().slice(0,28);ctx.font='700 21px "Space Grotesk"';var tw=ctx.measureText(title).width,pw=tw+46,ph=42,plx=C-pw/2,ply=pcy+pr+118;ctx.fillStyle=H.hexA(th.accent,.12);H.rr(plx,ply,pw,ph,21);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.85);ctx.lineWidth=1.5;H.rr(plx,ply,pw,ph,21);ctx.stroke();ctx.fillStyle=th.accent;ctx.fillText(title,C,ply+28);
+  var y=ply+ph+34;
   // ABOUT
-  var bio=D.why?(D.why.length>120?D.why.slice(0,117)+"\u2026":D.why):"";
-  if(bio){ctx.fillStyle="rgba(255,255,255,.05)";H.rr(70,y,W-140,74,20);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.2);ctx.lineWidth=1.5;H.rr(70,y,W-140,74,20);ctx.stroke();ctx.fillStyle=th.ink;ctx.font='400 22px "Space Grotesk"';ctx.textAlign="center";wrapText(ctx,bio,C,y+32,W-210,28,2);y+=96;}
-  // SKILLS chips w/ icons
+  var bio=D.why?(D.why.length>120?D.why.slice(0,117)+"…":D.why):"";
+  if(bio){ctx.fillStyle="rgba(255,255,255,.7)";ctx.font='400 20px "Space Grotesk"';ctx.textAlign="center";wrapText(ctx,bio,C,y,W-2*M-30,27,2);y+=58;}
+  ctx.strokeStyle=H.hexA(th.ink,.12);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(M,y);ctx.lineTo(W-M,y);ctx.stroke();y+=34;
+  // SKILLS
+  ctx.textAlign="center";ctx.fillStyle=H.hexA(th.ink,.5);ctx.font='600 14px "Space Grotesk"';H.spaced("STACK",C,y,3);y+=14;
   var chips=(D.tech||[]).slice(0,6);
-  if(chips.length){ctx.font='600 22px "Space Grotesk"';var gap=12,total=0,widths=[];for(var i=0;i<chips.length;i++){var lab=skillIcon(chips[i])+" "+chips[i];var wch=ctx.measureText(lab).width+34;widths.push(wch);total+=wch+gap;}total-=gap;var rx=C-total/2,ry=y+6;for(var j=0;j<chips.length;j++){var lb=skillIcon(chips[j])+" "+chips[j];ctx.fillStyle=H.hexA(th.accent,.14);H.rr(rx,ry,widths[j],46,23);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.4);ctx.lineWidth=1;H.rr(rx,ry,widths[j],46,23);ctx.stroke();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.fillText(lb,rx+17,ry+30);rx+=widths[j]+gap;}ctx.textAlign="center";y=ry+68;}
+  if(chips.length){ctx.font='600 20px "Space Grotesk"';var gap=10,total=0,wd=[];for(var i=0;i<chips.length;i++){var lab=skillIcon(chips[i])+"  "+chips[i];var wch=ctx.measureText(lab).width+30;wd.push(wch);total+=wch+gap;}total-=gap;var rx=C-total/2,ry=y+6;for(var j=0;j<chips.length;j++){var lb=skillIcon(chips[j])+"  "+chips[j];ctx.fillStyle=H.hexA(th.ink,.06);H.rr(rx,ry,wd[j],42,21);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.35);ctx.lineWidth=1;H.rr(rx,ry,wd[j],42,21);ctx.stroke();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.fillText(lb,rx+15,ry+27);rx+=wd[j]+gap;}ctx.textAlign="center";y=ry+62;}
   // BADGES
-  var bd=badgesFor();ctx.font='600 20px "Space Grotesk"';var bg=12,bt=0,bw=[];for(var k=0;k<bd.length;k++){var bx=ctx.measureText(bd[k]).width+28;bw.push(bx);bt+=bx+bg;}bt-=bg;var bxx=C-bt/2;for(var m=0;m<bd.length;m++){ctx.fillStyle=H.hexA(th.accent2,.16);H.rr(bxx,y,bw[m],42,21);ctx.fill();ctx.strokeStyle=H.hexA(th.accent2,.4);ctx.lineWidth=1;H.rr(bxx,y,bw[m],42,21);ctx.stroke();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.fillText(bd[m],bxx+14,y+27);bxx+=bw[m]+bg;}ctx.textAlign="center";y+=62;
+  ctx.fillStyle=H.hexA(th.ink,.5);ctx.font='600 14px "Space Grotesk"';H.spaced("ACHIEVEMENTS",C,y,3);y+=14;
+  var bd=badgesFor();ctx.font='600 18px "Space Grotesk"';var bgp=10,bt=0,bw2=[];for(var k=0;k<bd.length;k++){var bx2=ctx.measureText(bd[k]).width+26;bw2.push(bx2);bt+=bx2+bgp;}bt-=bgp;var bxx=C-bt/2,byy=y+6;for(var m=0;m<bd.length;m++){ctx.fillStyle=H.hexA(th.accent2,.14);H.rr(bxx,byy,bw2[m],38,19);ctx.fill();ctx.fillStyle="#fff";ctx.textAlign="left";ctx.fillText(bd[m],bxx+13,byy+25);bxx+=bw2[m]+bgp;}ctx.textAlign="center";y=byy+56;
   // QUOTE
-  ctx.fillStyle="rgba(252,233,168,.85)";ctx.font='italic 500 24px "Space Grotesk"';ctx.fillText('\u201c'+aiQuote(name.length+(D.role||"").length)+'\u201d',C,y+4);
+  ctx.fillStyle=H.hexA(th.ink,.7);ctx.font='italic 400 22px "Space Grotesk"';ctx.fillText("“"+aiQuote(name.length+(D.role||"").length)+"”",C,y);
   // QR PANEL
-  var band=Ht-262;ctx.fillStyle="rgba(255,255,255,.05)";H.rr(70,band,W-140,150,22);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.25);ctx.lineWidth=1.5;H.rr(70,band,W-140,150,22);ctx.stroke();
-  var qx=98,qy=band+20,qs=110;if(qrImg){ctx.fillStyle="#FFF7DF";H.rr(qx-6,qy-6,qs+12,qs+12,10);ctx.fill();ctx.drawImage(qrImg,qx,qy,qs,qs);}else{H.fauxQR(qx,qy,qs,th.c2,th.accent);}
-  var tx=qx+qs+34;ctx.textAlign="left";ctx.fillStyle="#fff";ctx.font='700 25px "Space Grotesk"';ctx.fillText("Scan to register",tx,band+50);ctx.fillStyle="rgba(255,255,255,.6)";ctx.font='500 19px "Space Grotesk"';ctx.fillText("Your unique HH Goa builder pass",tx,band+80);ctx.fillStyle=th.accent2;ctx.font='900 24px "Playfair Display"';ctx.fillText("Hacking Goa\u2019s Future",tx,band+116);
+  var band=Ht-258;ctx.fillStyle="rgba(255,255,255,.045)";H.rr(M-14,band,W-2*(M-14),150,22);ctx.fill();ctx.strokeStyle=H.hexA(th.accent,.25);ctx.lineWidth=1.5;H.rr(M-14,band,W-2*(M-14),150,22);ctx.stroke();
+  var qx=M+4,qy=band+20,qs=110;if(qrImg){ctx.fillStyle="#FFF7DF";H.rr(qx-6,qy-6,qs+12,qs+12,10);ctx.fill();ctx.drawImage(qrImg,qx,qy,qs,qs);}else{H.fauxQR(qx,qy,qs,th.c2,th.accent);}
+  var tx=qx+qs+30;ctx.textAlign="left";ctx.fillStyle="#fff";ctx.font='700 24px "Space Grotesk"';ctx.fillText("Scan to register",tx,band+50);ctx.fillStyle=H.hexA(th.ink,.6);ctx.font='500 18px "Space Grotesk"';ctx.fillText("Your unique HH Goa builder pass",tx,band+80);ctx.fillStyle=th.accent;ctx.font='900 22px "Playfair Display"';ctx.fillText("Hacking Goa’s Future",tx,band+114);
   // FOOTER
-  ctx.textAlign="center";ctx.fillStyle=th.accent;ctx.font='700 21px "Space Grotesk"';ctx.fillText("Ready to Build.   Ready to Ship.   Ready for HH Goa.",C,Ht-66);
-  ctx.fillStyle="rgba(252,233,168,.7)";ctx.font='600 20px "Space Grotesk"';ctx.fillText("#FrameInGoa    #HHGoa2026",C,Ht-38);
+  ctx.textAlign="center";ctx.fillStyle=th.accent;ctx.font='700 20px "Space Grotesk"';ctx.fillText("Ready to Build.   Ready to Ship.   Ready for HH Goa.",C,Ht-64);
+  ctx.fillStyle=H.hexA(th.ink,.6);ctx.font='600 18px "Space Grotesk"';ctx.fillText("#FrameInGoa    #HHGoa2026",C,Ht-38);
 }
 function renderPfp(ctx){
   var th=themeById(D.theme),H=mk(ctx),S=1080,C=540;
