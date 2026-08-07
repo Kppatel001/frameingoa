@@ -207,9 +207,8 @@ input[type=range]{accent-color:var(--pink);flex:1}
 
       <!-- STEP 2: tech + fun -->
       <div class="fstep glass formcard hidden" data-step="2">
-        <h2>Your stack &amp; story</h2>
-        <p class="desc">Pick your tech and answer a few fun ones — these flavor your builder title.</p>
-        <div class="field"><label>Tech stack <span class="opt">(tap to select)</span></label><div class="chips" id="f-tech"></div></div>
+        <h2>About you</h2>
+        <p class="desc">A short bio and where to find you — this shapes your builder identity.</p>
         <div class="field"><label>Why should HH Goa select you? <span class="opt">(optional · max 200)</span></label>
           <textarea id="f-why" maxlength="200" placeholder="Tell the judges what makes you a builder…"></textarea>
           <div class="count"><span id="why-count">0</span>/200</div>
@@ -550,7 +549,6 @@ function $(id){return document.getElementById(id);}
 function init(){
   var rs=$("f-role");ROLES.forEach(function(r){var o=document.createElement("option");o.value=r;o.textContent=r;rs.appendChild(o);});
   rs.value=D.role;rs.addEventListener("change",function(){D.role=rs.value;});
-  var tc=$("f-tech");TECH.forEach(function(t){var el=document.createElement("div");el.className="chip";el.textContent=t;el.onclick=function(){var i=D.tech.indexOf(t);if(i>=0){D.tech.splice(i,1);el.classList.remove("on");}else{D.tech.push(t);el.classList.add("on");}};tc.appendChild(el);});
   var tg=$("f-themes");THEMES.forEach(function(th){var el=document.createElement("div");el.className="theme"+(th.id===D.theme?" on":"");el.innerHTML='<div class="sw" style="background:linear-gradient(135deg,'+th.c1+','+th.c2+')"><div style="height:100%;display:flex;align-items:center;justify-content:center;gap:6px"><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent+'"></span><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent2+'"></span></div></div><div class="nm" style="color:'+th.ink+'">'+th.name+'</div>';el.onclick=function(){D.theme=th.id;[].forEach.call(tg.children,function(c){c.classList.remove("on");});el.classList.add("on");drawPhotoPreview();};tg.appendChild(el);});
   var why=$("f-why");why.addEventListener("input",function(){$("why-count").textContent=why.value.length;});
   bindPhoto();bindResult();
@@ -574,7 +572,7 @@ function flash(id){var el=$(id);el.style.borderColor="var(--pink)";el.focus();se
 
 /* review */
 function buildReview(){D.title=funTitle(D.role,TSEED);drawPhotoPreview();
-  var rows=[["Name",D.name||"—"],["Role",D.role],["City",D.city||"—"],["Tech",D.tech.slice(0,6).join(", ")||"—"],["Theme",themeById(D.theme).name],["Builder title",D.title]];
+  var rows=[["Name",D.name||"—"],["Role",D.role],["City",D.city||"—"],["Theme",themeById(D.theme).name],["Builder title",D.title]];
   if(D.why)rows.push(["Builder story","★ Included"]);
   $("review-list").innerHTML=rows.map(function(r){return '<div class="rev-row"><span class="k">'+r[0]+'</span><span class="v">'+esc(r[1])+'</span></div>';}).join("");
 }
