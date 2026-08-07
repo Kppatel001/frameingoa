@@ -389,6 +389,7 @@ var D={name:"",email:"",org:"",city:"",country:"",role:"Student",tech:[],lang:""
 var MODE="id", STEP=1, TSEED=0;
 var photoImg=null, ptf={scale:1,dx:0,dy:0,bright:1,blur:false};
 var builderNo="",qrImg=null;
+var bgImg=null;
 var STATS={builders:0,downloads:0,shares:0};
 
 /* ============================ MESH BG ============================ */
@@ -436,6 +437,32 @@ function paintBase(ctx,H,w,h,th){
 }
 
 function renderId(ctx){
+  if(!bgImg){renderCoded(ctx);return;}
+  var W=ctx.canvas.width,Ht=ctx.canvas.height,C=W/2,H=mk(ctx);
+  var G="#14401f",CREAM="#FBF3DE",PINK="#E5197E",YEL="#FFC629",WH="#fff";
+  var iw=bgImg.naturalWidth||bgImg.width,ih=bgImg.naturalHeight||bgImg.height,s=Math.max(W/iw,Ht/ih);
+  ctx.drawImage(bgImg,C-iw*s/2,Ht/2-ih*s/2,iw*s,ih*s);
+  ctx.textBaseline="alphabetic";
+  var pr=Math.round(W*0.185),pcy=Math.round(Ht*0.35);
+  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="#dfe3d8";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=G;ctx.font='500 28px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
+  ctx.strokeStyle=YEL;ctx.lineWidth=12;ctx.beginPath();ctx.arc(C,pcy,pr+8,0,7);ctx.stroke();
+  ctx.strokeStyle=PINK;ctx.lineWidth=4;ctx.setLineDash([12,9]);ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();ctx.setLineDash([]);
+  var y0=pcy+pr+40;
+  var name=(D.name||"YOUR NAME").toUpperCase().slice(0,22);ctx.fillStyle=G;H.rr(C-300,y0,600,72,20);ctx.fill();ctx.strokeStyle=YEL;ctx.lineWidth=2;H.rr(C-300,y0,600,72,20);ctx.stroke();ctx.fillStyle=WH;ctx.textAlign="center";var ns=H.fit(name,500,"900",'"Space Grotesk"',40,24);ctx.font='900 '+ns+'px "Space Grotesk"';ctx.fillText(name,C,y0+48);
+  var ry=y0+88;var role=(D.role||"BUILDER").toUpperCase().slice(0,24);ctx.fillStyle=YEL;H.rr(C-200,ry,400,54,15);ctx.fill();ctx.fillStyle=G;ctx.font='22px serif';ctx.fillText("⚡",C-160,ry+36);ctx.fillText("⚡",C+160,ry+36);ctx.fillStyle=PINK;ctx.font='900 24px "Space Grotesk"';ctx.fillText(role,C,ry+36);
+  var cy0=ry+92;
+  ctx.fillStyle=G;ctx.font='900 18px "Space Grotesk"';ctx.textAlign="center";ctx.fillText("BUILDER CLASS",232,cy0);ctx.fillText("BEACH BAG",540,cy0);ctx.fillText("CURRENTLY SHIPPING",852,cy0);
+  var title=(D.title||funTitle(D.role,TSEED)).toUpperCase();ctx.fillStyle=PINK;ctx.font='900 24px "Space Grotesk"';wrapText(ctx,title,232,cy0+34,240,28,2);
+  if(qrImg){ctx.fillStyle=WH;H.rr(158,cy0+66,150,150,10);ctx.fill();ctx.drawImage(qrImg,166,cy0+74,134,134);}else{H.fauxQR(166,cy0+74,134,G,CREAM);}
+  ctx.textAlign="left";ctx.font='30px serif';ctx.fillText("🥥",452,cy0+46);ctx.fillText("💻",452,cy0+98);ctx.fillText("🎧",452,cy0+150);
+  ctx.fillStyle=G;ctx.font='700 20px "Space Grotesk"';ctx.fillText("COCONUT",500,cy0+40);ctx.fillText("VS CODE",500,cy0+92);ctx.fillText("LO-FI BEATS",500,cy0+144);
+  var ship=(D.why?D.why:"Building the Future").toUpperCase().slice(0,36);ctx.fillStyle=PINK;ctx.font='900 22px "Space Grotesk"';ctx.textAlign="center";wrapText(ctx,ship,852,cy0+34,230,26,2);
+  ctx.fillStyle=G;ctx.font='900 16px "Space Grotesk"';ctx.fillText("BUILDER ID",852,cy0+120);
+  var shortId="#HH-GOA-"+(1000+Math.abs(hashStr(builderNo))%9000);ctx.fillStyle=PINK;ctx.font='700 20px "Space Grotesk"';ctx.fillText(shortId,852,cy0+148);
+  var bx=760;ctx.fillStyle=G;while(bx<960){var bw4=1+Math.floor((bx*7)%4);ctx.fillRect(bx,cy0+168,bw4,42);bx+=bw4+(1+Math.floor((bx*5)%3));}
+  var fry=Ht-92;ctx.fillStyle=PINK;H.rr(C-240,fry,480,54,14);ctx.fill();ctx.fillStyle=WH;ctx.textAlign="center";ctx.font='900 30px "Space Grotesk"';ctx.fillText("#FRAMEINGOA",C,fry+37);
+}
+function renderCoded(ctx){
   var th=themeById(D.theme),H=mk(ctx),W=1080,Ht=1350,C=540,M=120;
   paintBase(ctx,H,W,Ht,th);
   ctx.fillStyle="rgba(4,10,8,0.28)";ctx.fillRect(0,0,W,Ht);
@@ -587,7 +614,7 @@ function finishGenerate(){
 function renderResult(){
   var cv=$("result-canvas");
   if(MODE==="pfp"){cv.width=1080;cv.height=1080;renderPfp(cv.getContext("2d"));}
-  else{cv.width=1200;cv.height=1500;renderId(cv.getContext("2d"));}
+  else{cv.width=1080;cv.height=1350;renderId(cv.getContext("2d"));}
   $("story-badge-wrap").innerHTML=D.why?'<div class="storybadge">★ Builder Story Included</div>':"";
   $("regid").innerHTML="";
   $("screen-loading").classList.remove("on");goScreen("result");
@@ -620,6 +647,7 @@ function confetti(){function fire(){var c=window.confetti,cl=["#FFD43B","#FF2D7A
 
 /* boot */
 if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){if(STEP===3)drawPhotoPreview();});}
+(function(){try{var i=new Image();i.crossOrigin="anonymous";i.onload=function(){bgImg=i;try{drawPhotoPreview();}catch(e){}};i.onerror=function(){bgImg=null;};i.src="https://cdn.gamma.app/vnr6ct7n8fx68ml/design-anything/CJi1qcmrh2SbNcXpvvV8C/wrFATx0M2LxUyMTShoY6c.png";}catch(e){}})();
 init();
 </script>
 </body>
