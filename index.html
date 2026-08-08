@@ -444,7 +444,17 @@ function renderId(ctx){
   var iw=bgImg.naturalWidth||bgImg.width,ih=bgImg.naturalHeight||bgImg.height,s=Math.max(W/iw,Ht/ih);
   ctx.drawImage(bgImg,C-iw*s/2,Ht/2-ih*s/2,iw*s,ih*s);
   ctx.textBaseline="alphabetic";
-  var pr=195,pcy=459;
+  // HEADER: HACKER गोवा HOUSE
+  ctx.textAlign="center";ctx.font='900 52px "Playfair Display"';
+  var _t1="HACKER ",_t3=" HOUSE";
+  ctx.font='700 34px "Noto Sans Devanagari"';var _wm=ctx.measureText("गोवा").width;
+  ctx.font='900 52px "Playfair Display"';var _w1=ctx.measureText(_t1).width,_w3=ctx.measureText(_t3).width;
+  var _tot=_w1+_wm+26+_w3,_sx=C-_tot/2;
+  ctx.textAlign="left";ctx.fillStyle=G;ctx.fillText(_t1,_sx,214);
+  var _mx=_sx+_w1;ctx.fillStyle=PINK;H.rr(_mx-4,178,_wm+24,44,12);ctx.fill();ctx.fillStyle=YEL;ctx.font='700 34px "Noto Sans Devanagari"';ctx.fillText("गोवा",_mx+8,213);
+  ctx.font='900 52px "Playfair Display"';ctx.fillStyle=G;ctx.fillText(_t3,_mx+_wm+26,214);
+  ctx.textAlign="center";ctx.fillStyle=G;ctx.font='600 18px "Space Grotesk"';H.spaced("BUILDER IDENTITY",C,244,5);
+  var pr=195,pcy=469;
   if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="#dfe3d8";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=G;ctx.font='500 26px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
   ctx.strokeStyle=YEL;ctx.lineWidth=11;ctx.beginPath();ctx.arc(C,pcy,pr+7,0,7);ctx.stroke();
   ctx.strokeStyle=PINK;ctx.lineWidth=4;ctx.setLineDash([12,9]);ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();ctx.setLineDash([]);
