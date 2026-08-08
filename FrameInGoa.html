@@ -192,13 +192,14 @@ input[type=range]{accent-color:var(--pink);flex:1}
 
       <!-- STEP 1: personal -->
       <div class="fstep glass formcard" data-step="1">
-        <h2>Personal details</h2>
-        <p class="desc">This is how your Builder Identity will be addressed.</p>
+        <h2>Who are you?</h2>
+        <p class="desc">The basics for your official HH Goa builder pass.</p>
         <div class="field"><label>Full name <span class="req">*</span></label><input class="input" id="f-name" maxlength="34" placeholder="Ada Lovelace"></div>
         <div class="grid2">
-          <div class="field"><label>Role <span class="req">*</span></label><select id="f-role"></select></div>
-          <div class="field"><label>City</label><input class="input" id="f-city" maxlength="24" placeholder="Panaji"></div>
+          <div class="field"><label>Role / specialization <span class="req">*</span></label><select id="f-role"></select></div>
+          <div class="field"><label>City <span class="req">*</span></label><input class="input" id="f-city" maxlength="24" placeholder="e.g. Ahmedabad"></div>
         </div>
+        <div class="field"><label>Country</label><input class="input" id="f-country" maxlength="24" value="India" placeholder="India"></div>
         <div class="stepnav">
           <button class="btn btn-glass" onclick="goScreen('welcome')">← Back</button>
           <button class="btn btn-grad" onclick="nextStep(1)">Continue →</button>
@@ -207,9 +208,18 @@ input[type=range]{accent-color:var(--pink);flex:1}
 
       <!-- STEP 2: tech + fun -->
       <div class="fstep glass formcard hidden" data-step="2">
-        <h2>About you</h2>
-        <p class="desc">A short bio and where to find you — this shapes your builder identity.</p>
-        <div class="field"><label>Tech stack <span class="opt">(tap up to 8)</span></label><div class="chips" id="f-tech"></div></div>
+        <h2>Your builder identity</h2>
+        <p class="desc">What you build with, and the vibe that’s you.</p>
+        <div class="field"><label>Tech stack <span class="req">*</span> <span class="opt">(tap up to 8)</span></label><div class="chips" id="f-tech"></div></div>
+        <div class="title-row" style="margin-bottom:14px">
+          <div class="field" style="flex:1;margin-bottom:0"><label>Builder title <span class="opt">(auto or custom · max 30)</span></label><input class="input" id="f-title" maxlength="30" placeholder="e.g. Code Architect"></div>
+          <button type="button" class="btn btn-green btn-sm" id="f-titlegen" title="Generate a title">🎲</button>
+        </div>
+        <div class="grid2">
+          <div class="field"><label>Favorite editor</label><select id="f-editor"><option>VS Code</option><option>Cursor</option><option>Zed</option><option>IntelliJ</option><option>Neovim</option><option>Other</option></select></div>
+          <div class="field"><label>Years coding</label><select id="f-years"><option>&lt; 1</option><option>1–2</option><option selected>2+ Years</option><option>3–5</option><option>5+</option></select></div>
+        </div>
+        <div class="field"><label>Currently building <span class="opt">(optional)</span></label><input class="input" id="f-dream" maxlength="40" placeholder="e.g. AI Exam Generator"></div>
         <div class="field"><label>Builder quote <span class="opt">(optional · max 80)</span></label>
           <textarea id="f-why" maxlength="80" placeholder="Code. Learn. Ship. Repeat."></textarea>
           <div class="count"><span id="why-count">0</span>/200</div>
@@ -231,7 +241,7 @@ input[type=range]{accent-color:var(--pink);flex:1}
 
       <!-- STEP 3: photo -->
       <div class="fstep glass formcard hidden" data-step="3">
-        <h2>Photo upload</h2>
+        <h2>Add your photo</h2>
         <p class="desc">Drag to position, zoom, and tune brightness. Your face stays front and center.</p>
         <div id="photo-empty">
           <label class="uploadbox" id="dropzone">
@@ -258,7 +268,7 @@ input[type=range]{accent-color:var(--pink);flex:1}
 
       <!-- STEP 4: theme -->
       <div class="fstep glass formcard hidden" data-step="4">
-        <h2>Choose your theme</h2>
+        <h2>Choose your Goa vibe</h2>
         <p class="desc">Ten looks, one identity. Pick the vibe that's you.</p>
         <div class="themes" id="f-themes"></div>
         <div class="stepnav">
@@ -345,8 +355,8 @@ input[type=range]{accent-color:var(--pink);flex:1}
 <script>
 /* ============================ DATA ============================ */
 var HASH="#FrameInGoa #HHGoa2026 #BuildInPublic";
-var ROLES=["Student","Frontend Developer","Backend Developer","Full Stack Developer","Flutter Developer","Mobile Developer","AI Engineer","ML Engineer","Cyber Security","UI/UX Designer","Founder","Product Manager","DevOps Engineer","Blockchain Developer"];
-var TECH=["React","Next.js","Flutter","Node.js","Python","Java","Go","Rust","C++","PHP","Laravel","Firebase","Supabase","MongoDB","PostgreSQL","Docker","AWS","Azure","Google Cloud","TensorFlow","PyTorch","Kubernetes","Git","GitHub"];
+var ROLES=["AI Engineer","Full Stack Developer","Frontend Developer","Backend Developer","Flutter Developer","Mobile Developer","UI/UX Designer","Cybersecurity","Data Scientist","ML Engineer","DevOps Engineer","Product Builder","Founder","Student","Other"];
+var TECH=["Python","JavaScript","TypeScript","React","Next.js","Flutter","Dart","Node.js","Java","C++","PHP","Laravel","Firebase","Supabase","MongoDB","PostgreSQL","AWS","Docker","AI","Machine Learning","Cybersecurity","GitHub"];
 var THEMES=[
   {id:"classic",name:"Classic HH Goa",c1:"#0d3a24",c2:"#04120C",accent:"#FFD43B",accent2:"#FF2D7A",ink:"#FCE9A8",motif:"waves"},
   {id:"cyberpunk",name:"Cyberpunk",c1:"#170033",c2:"#05000f",accent:"#00E5FF",accent2:"#FF2D95",ink:"#d7f7ff",motif:"scan"},
@@ -575,6 +585,7 @@ function init(){
   rs.value=D.role;rs.addEventListener("change",function(){D.role=rs.value;});
   var tg=$("f-themes");THEMES.forEach(function(th){var el=document.createElement("div");el.className="theme"+(th.id===D.theme?" on":"");el.innerHTML='<div class="sw" style="background:linear-gradient(135deg,'+th.c1+','+th.c2+')"><div style="height:100%;display:flex;align-items:center;justify-content:center;gap:6px"><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent+'"></span><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent2+'"></span></div></div><div class="nm" style="color:'+th.ink+'">'+th.name+'</div>';el.onclick=function(){D.theme=th.id;[].forEach.call(tg.children,function(c){c.classList.remove("on");});el.classList.add("on");drawPhotoPreview();};tg.appendChild(el);});
   var tc=$("f-tech");if(tc)TECH.forEach(function(t){var el=document.createElement("div");el.className="chip";el.textContent=t;el.onclick=function(){var i=D.tech.indexOf(t);if(i>=0){D.tech.splice(i,1);el.classList.remove("on");}else{if(D.tech.length>=8)return;D.tech.push(t);el.classList.add("on");}};tc.appendChild(el);});
+  var _tg=$("f-titlegen");if(_tg)_tg.addEventListener("click",function(){var el=$("f-title");if(el){el.value=funTitle($("f-role").value,Math.floor(Math.random()*97));}});
   var why=$("f-why");why.addEventListener("input",function(){$("why-count").textContent=why.value.length;});
   bindPhoto();bindResult();
 }
@@ -586,9 +597,10 @@ function goScreen(n){["welcome","form","pfp","result"].forEach(function(s){$("sc
 function startFlow(mode){MODE=mode;STEP=1;collect();if(mode==="pfp"){goScreen("pfp");}else{goScreen("form");showStep(1);}}
 function renderProgress(){var labels=["Details","Stack","Photo","Theme","Review"];var p=$("progress");p.innerHTML="";labels.forEach(function(l,i){var n=i+1;var d=document.createElement("div");d.className="pstep"+(n<STEP?" done":n===STEP?" active":"");d.innerHTML='<span class="b">'+(n<STEP?"✓":n)+'</span><span class="lbl">'+l+'</span>';p.appendChild(d);if(i<labels.length-1){var ln=document.createElement("span");ln.className="line";p.appendChild(ln);}});}
 function showStep(n){STEP=n;[].forEach.call(document.querySelectorAll(".fstep"),function(el){el.classList.toggle("hidden",+el.getAttribute("data-step")!==n);});renderProgress();if(n===3)drawPhotoPreview();if(n===5)buildReview();window.scrollTo(0,0);}
-function collect(){D.name=$("f-name").value.trim();D.city=$("f-city").value.trim();D.role=$("f-role").value;D.why=$("f-why").value.trim();D.gh=$("f-gh").value.trim();D.x=$("f-x").value.trim();D.inh=$("f-in").value.trim();D.web=$("f-web").value.trim();}
+function collect(){function gv(id){var e=$(id);return e?(e.value||"").trim():"";}D.name=gv("f-name");D.city=gv("f-city");D.country=gv("f-country");D.role=gv("f-role");D.title=gv("f-title");D.editor=gv("f-editor");D.years=gv("f-years");D.dream=gv("f-dream");D.why=gv("f-why");D.gh=gv("f-gh");D.x=gv("f-x");D.inh=gv("f-in");D.web=gv("f-web");}
 function nextStep(n){collect();
-  if(n===1){if(!D.name){flash("f-name");return;}}
+  if(n===1){if(!D.name){flash("f-name");return;}if(!D.city){flash("f-city");return;}}
+  if(n===2){if(!D.tech.length){var _tc=$("f-tech");if(_tc){_tc.style.outline="2px solid var(--pink)";_tc.style.borderRadius="10px";setTimeout(function(){_tc.style.outline="";},1000);}return;}}
   if(n===3&&!photoImg){$("dropzone").classList.add("drag");setTimeout(function(){$("dropzone").classList.remove("drag");},600);$("result-hint");return;}
   showStep(n+1);
 }
@@ -596,7 +608,7 @@ function prevStep(n){collect();if(n===1){goScreen("welcome");return;}showStep(n-
 function flash(id){var el=$(id);el.style.borderColor="var(--pink)";el.focus();setTimeout(function(){el.style.borderColor="";},900);}
 
 /* review */
-function buildReview(){D.title=funTitle(D.role,TSEED);drawPhotoPreview();
+function buildReview(){if(!D.title)D.title=funTitle(D.role,TSEED);drawPhotoPreview();
   var rows=[["Name",D.name||"—"],["Role",D.role],["City",D.city||"—"],["Theme",themeById(D.theme).name],["Builder title",D.title]];
   if(D.why)rows.push(["Builder story","★ Included"]);
   $("review-list").innerHTML=rows.map(function(r){return '<div class="rev-row"><span class="k">'+r[0]+'</span><span class="v">'+esc(r[1])+'</span></div>';}).join("");
@@ -630,7 +642,7 @@ function loadScript(src,cb){if(window.__l&&window.__l[src]){cb();return;}var s=d
 var LOAD_MSGS=["Uploading photo…","Optimizing image…","Detecting face…","Generating builder title…","Creating hacker identity…","Designing premium card…","Almost ready…","Welcome to HH Goa!"];
 function generate(){collect();
   builderNo=genId();
-  D.title=funTitle(D.role,TSEED);
+  if(!D.title)D.title=funTitle(D.role,TSEED);
   var ov=$("screen-loading");ov.classList.add("on");
   var i=0,lt=$("loadtext");lt.textContent=LOAD_MSGS[0];
   var iv=setInterval(function(){i++;if(i<LOAD_MSGS.length){lt.textContent=LOAD_MSGS[i];}},330);
