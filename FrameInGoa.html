@@ -209,8 +209,9 @@ input[type=range]{accent-color:var(--pink);flex:1}
       <div class="fstep glass formcard hidden" data-step="2">
         <h2>About you</h2>
         <p class="desc">A short bio and where to find you — this shapes your builder identity.</p>
-        <div class="field"><label>Why should HH Goa select you? <span class="opt">(optional · max 200)</span></label>
-          <textarea id="f-why" maxlength="200" placeholder="Tell the judges what makes you a builder…"></textarea>
+        <div class="field"><label>Tech stack <span class="opt">(tap up to 8)</span></label><div class="chips" id="f-tech"></div></div>
+        <div class="field"><label>Builder quote <span class="opt">(optional · max 80)</span></label>
+          <textarea id="f-why" maxlength="80" placeholder="Code. Learn. Ship. Repeat."></textarea>
           <div class="count"><span id="why-count">0</span>/200</div>
         </div>
         <h2 style="font-size:20px;margin-top:8px">Social links <span class="opt" style="font-size:13px">(optional)</span></h2>
@@ -440,37 +441,69 @@ function paintBase(ctx,H,w,h,th){
 function renderId(ctx){
   if(!bgImg){renderCoded(ctx);return;}
   var W=ctx.canvas.width,Ht=ctx.canvas.height,C=W/2,H=mk(ctx);
-  var G="#14401f",CREAM="#FBF3DE",PINK="#E5197E",YEL="#FFC629",WH="#fff";
+  var G="#14401f",CREAM="#FBF3DE",PINK="#E5197E",YEL="#FFC629",WH="#fff",INK="#173a22";
   var iw=bgImg.naturalWidth||bgImg.width,ih=bgImg.naturalHeight||bgImg.height,s=Math.max(W/iw,Ht/ih);
   ctx.drawImage(bgImg,C-iw*s/2,Ht/2-ih*s/2,iw*s,ih*s);
   ctx.textBaseline="alphabetic";
-  // HEADER: HACKER गोवा HOUSE
+  function panel(x,y,w,h,r){ctx.fillStyle="rgba(251,243,222,0.94)";H.rr(x,y,w,h,r);ctx.fill();ctx.strokeStyle=H.hexA(G,.35);ctx.lineWidth=2;H.rr(x,y,w,h,r);ctx.stroke();}
+  // HEADER
   ctx.textAlign="center";ctx.font='900 52px "Playfair Display"';
-  var _t1="HACKER ",_t3=" HOUSE";
-  ctx.font='700 34px "Noto Sans Devanagari"';var _wm=ctx.measureText("गोवा").width;
-  ctx.font='900 52px "Playfair Display"';var _w1=ctx.measureText(_t1).width,_w3=ctx.measureText(_t3).width;
-  var _tot=_w1+_wm+26+_w3,_sx=C-_tot/2;
-  ctx.textAlign="left";ctx.fillStyle=G;ctx.fillText(_t1,_sx,214);
-  var _mx=_sx+_w1;ctx.fillStyle=PINK;H.rr(_mx-4,178,_wm+24,44,12);ctx.fill();ctx.fillStyle=YEL;ctx.font='700 34px "Noto Sans Devanagari"';ctx.fillText("गोवा",_mx+8,213);
-  ctx.font='900 52px "Playfair Display"';ctx.fillStyle=G;ctx.fillText(_t3,_mx+_wm+26,214);
-  ctx.textAlign="center";ctx.fillStyle=G;ctx.font='600 18px "Space Grotesk"';H.spaced("BUILDER IDENTITY",C,244,5);
-  var pr=195,pcy=469;
-  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="#dfe3d8";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=G;ctx.font='500 26px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
-  ctx.strokeStyle=YEL;ctx.lineWidth=11;ctx.beginPath();ctx.arc(C,pcy,pr+7,0,7);ctx.stroke();
-  ctx.strokeStyle=PINK;ctx.lineWidth=4;ctx.setLineDash([12,9]);ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();ctx.setLineDash([]);
-  var y0=684;
-  var name=(D.name||"YOUR NAME").toUpperCase().slice(0,20);ctx.fillStyle=G;H.rr(C-280,y0,560,66,18);ctx.fill();ctx.strokeStyle=YEL;ctx.lineWidth=2;H.rr(C-280,y0,560,66,18);ctx.stroke();ctx.fillStyle=WH;ctx.textAlign="center";var ns=H.fit(name,470,"900",'"Space Grotesk"',38,22);ctx.font='900 '+ns+'px "Space Grotesk"';ctx.fillText(name,C,y0+44);
-  var ry=y0+82;var role=(D.role||"BUILDER").toUpperCase().slice(0,22);ctx.fillStyle=YEL;H.rr(C-180,ry,360,50,14);ctx.fill();ctx.fillStyle=G;ctx.font='20px serif';ctx.fillText("⚡",C-145,ry+33);ctx.fillText("⚡",C+145,ry+33);ctx.fillStyle=PINK;ctx.font='900 23px "Space Grotesk"';ctx.fillText(role,C,ry+33);
-  var cy0=ry+86;
-  ctx.fillStyle=G;ctx.font='900 17px "Space Grotesk"';ctx.textAlign="center";ctx.fillText("BUILDER CLASS",236,cy0);ctx.fillText("BEACH BAG",540,cy0);ctx.fillText("CURRENTLY SHIPPING",844,cy0);
-  var title=(D.title||funTitle(D.role,TSEED)).toUpperCase();ctx.fillStyle=PINK;ctx.font='900 22px "Space Grotesk"';wrapText(ctx,title,236,cy0+30,220,26,2);
-  if(qrImg){ctx.fillStyle=WH;H.rr(172,cy0+58,128,128,10);ctx.fill();ctx.drawImage(qrImg,180,cy0+66,112,112);}else{H.fauxQR(180,cy0+66,112,G,CREAM);}
-  ctx.textAlign="left";ctx.font='26px serif';ctx.fillText("🥥",448,cy0+44);ctx.fillText("💻",448,cy0+92);ctx.fillText("🎧",448,cy0+140);
-  ctx.fillStyle=G;ctx.font='700 19px "Space Grotesk"';ctx.fillText("COCONUT",492,cy0+40);ctx.fillText("VS CODE",492,cy0+88);ctx.fillText("LO-FI BEATS",492,cy0+136);
-  var ship=(D.why?D.why:"Building the Future").toUpperCase().slice(0,34);ctx.fillStyle=PINK;ctx.font='900 21px "Space Grotesk"';ctx.textAlign="center";wrapText(ctx,ship,844,cy0+30,210,24,2);
-  ctx.fillStyle=G;ctx.font='900 15px "Space Grotesk"';ctx.fillText("BUILDER ID",844,cy0+108);
-  var shortId="#HH-GOA-"+(1000+Math.abs(hashStr(builderNo))%9000);ctx.fillStyle=PINK;ctx.font='700 19px "Space Grotesk"';ctx.fillText(shortId,844,cy0+134);
-  var bx=752;ctx.fillStyle=G;while(bx<944){var bw4=1+Math.floor((bx*7)%4);ctx.fillRect(bx,cy0+150,bw4,40);bx+=bw4+(1+Math.floor((bx*5)%3));}
+  var t1="HACKER ",t3=" HOUSE";
+  ctx.font='700 34px "Noto Sans Devanagari"';var wm=ctx.measureText("गोवा").width;
+  ctx.font='900 52px "Playfair Display"';var w1=ctx.measureText(t1).width,w3=ctx.measureText(t3).width;
+  var tot=w1+wm+26+w3,sx=C-tot/2;
+  ctx.textAlign="left";ctx.fillStyle=G;ctx.fillText(t1,sx,206);
+  var mx=sx+w1;ctx.fillStyle=PINK;H.rr(mx-4,170,wm+24,44,12);ctx.fill();ctx.fillStyle=YEL;ctx.font='700 34px "Noto Sans Devanagari"';ctx.fillText("गोवा",mx+8,205);
+  ctx.font='900 52px "Playfair Display"';ctx.fillStyle=G;ctx.fillText(t3,mx+wm+26,206);
+  ctx.textAlign="center";ctx.fillStyle=G;ctx.font='600 18px "Space Grotesk"';H.spaced("BUILDER IDENTITY",C,236,5);
+  // PHOTO
+  var pr=162,pcy=440;
+  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="#dfe3d8";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=G;ctx.font='500 24px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
+  ctx.strokeStyle=YEL;ctx.lineWidth=10;ctx.beginPath();ctx.arc(C,pcy,pr+7,0,7);ctx.stroke();
+  ctx.strokeStyle=PINK;ctx.lineWidth=4;ctx.setLineDash([11,8]);ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();ctx.setLineDash([]);
+  // INFO BOX top-right
+  var ibx=772,iby=356,ibw=244,ibh=192;panel(ibx,iby,ibw,ibh,16);
+  ctx.textAlign="left";ctx.font='20px serif';ctx.fillText("📍",ibx+16,iby+42);ctx.fillText("📅",ibx+16,iby+96);ctx.fillText("🌊",ibx+16,iby+150);
+  ctx.fillStyle=G;ctx.font='700 17px "Space Grotesk"';
+  ctx.fillText(((D.city||"GOA")+", "+(D.country||"INDIA")).toUpperCase().slice(0,16),ibx+50,iby+40);
+  ctx.fillText("28 – 31 OCT 2026",ibx+50,iby+94);
+  wrapText(ctx,(D.dream||"Building the Future").toUpperCase(),ibx+50,iby+144,ibw-62,20,2);
+  // NAME banner
+  var name=(D.name||"YOUR NAME").toUpperCase().slice(0,20);ctx.fillStyle=G;H.rr(C-262,624,524,62,18);ctx.fill();ctx.strokeStyle=YEL;ctx.lineWidth=2;H.rr(C-262,624,524,62,18);ctx.stroke();
+  ctx.fillStyle=YEL;ctx.font='20px serif';ctx.textAlign="center";ctx.fillText("✦",C-232,663);ctx.fillText("✦",C+232,663);
+  ctx.fillStyle=WH;var ns=H.fit(name,420,"900",'"Space Grotesk"',36,22);ctx.font='900 '+ns+'px "Space Grotesk"';ctx.fillText(name,C,667);
+  // ROLE pill
+  var role=(D.role||"BUILDER").toUpperCase().slice(0,24);ctx.fillStyle=YEL;H.rr(C-175,698,350,46,14);ctx.fill();ctx.fillStyle=G;ctx.font='18px serif';ctx.fillText("⚡",C-142,730);ctx.fillText("⚡",C+142,730);ctx.fillStyle=PINK;ctx.font='900 22px "Space Grotesk"';ctx.fillText(role,C,729);
+  // ===== 3-COLUMN PANEL =====
+  panel(40,762,1000,224,22);
+  ctx.strokeStyle=H.hexA(G,.3);ctx.setLineDash([5,6]);ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(374,782);ctx.lineTo(374,966);ctx.moveTo(706,782);ctx.lineTo(706,966);ctx.stroke();ctx.setLineDash([]);
+  function chead(cx,txt){ctx.fillStyle=G;ctx.font='900 17px "Space Grotesk"';ctx.textAlign="center";ctx.fillText(txt,cx,800);var hw=ctx.measureText(txt).width;ctx.fillStyle=PINK;ctx.fillText("✦",cx-hw/2-14,800);ctx.fillText("✦",cx+hw/2+14,800);}
+  chead(207,"BUILDER TITLE");chead(540,"TECH STACK");chead(873,"BUILDER QUOTE");
+  // col1 title
+  ctx.textAlign="center";ctx.font='34px serif';ctx.fillText("⌨️",207,850);
+  ctx.fillStyle=PINK;ctx.font='900 24px "Space Grotesk"';wrapText(ctx,(D.title||funTitle(D.role,TSEED)).toUpperCase(),207,894,230,28,2);
+  // col2 tech tiles
+  var techs=(D.tech&&D.tech.length?D.tech:["Python","React","JavaScript","Node.js","Flutter","Firebase","GitHub","AI"]).slice(0,8);
+  var tile=62,tg=12,cols=4,gw=cols*tile+(cols-1)*tg,gx=540-gw/2,gy=820;
+  for(var ti=0;ti<techs.length;ti++){var rowi=Math.floor(ti/cols),coli=ti%cols;var txx=gx+coli*(tile+tg),tyy=gy+rowi*(tile+tg);ctx.fillStyle=WH;H.rr(txx,tyy,tile,tile,12);ctx.fill();ctx.strokeStyle=H.hexA(G,.25);ctx.lineWidth=1;H.rr(txx,tyy,tile,tile,12);ctx.stroke();ctx.fillStyle=G;ctx.font='30px serif';ctx.textAlign="center";ctx.fillText(skillIcon(techs[ti]),txx+tile/2,tyy+tile/2+11);}
+  // col3 quote
+  ctx.fillStyle=PINK;ctx.font='900 44px serif';ctx.textAlign="left";ctx.fillText("“",742,844);ctx.textAlign="right";ctx.fillText("”",1008,972);
+  ctx.fillStyle=INK;ctx.font='500 22px "Space Grotesk"';ctx.textAlign="center";wrapText(ctx,(D.why||aiQuote((D.name||"").length)),873,884,214,28,3);
+  // ===== STATS PANEL =====
+  panel(40,1000,1000,150,22);
+  var stats=[["FAVORITE EDITOR","💻",(D.editor||"VS Code")],["YEARS OF CODING","</>",(D.years||"2+ Years")],["COFFEE LEVEL","☕","HIGH"],["NIGHT OWL","🦉","YES"],["SHIP SPEED","🚀","FAST"],["HACKATHON","🏆","10+"]];
+  var sw=1000/6;
+  for(var si=0;si<6;si++){var scx=40+sw*si+sw/2;ctx.textAlign="center";ctx.fillStyle=G;ctx.font='700 12px "Space Grotesk"';wrapText(ctx,stats[si][0],scx,1030,sw-14,15,2);ctx.font='28px serif';ctx.fillText(stats[si][1],scx,1092);ctx.fillStyle=PINK;ctx.font='800 15px "Space Grotesk"';ctx.fillText(String(stats[si][2]).toUpperCase().slice(0,10),scx,1128);if(si<5){ctx.strokeStyle=H.hexA(G,.2);ctx.setLineDash([4,5]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(40+sw*(si+1),1018);ctx.lineTo(40+sw*(si+1),1132);ctx.stroke();ctx.setLineDash([]);}}
+  // ===== QR / BUILDER ID PANEL =====
+  panel(40,1162,660,140,20);
+  if(qrImg){ctx.fillStyle=WH;H.rr(60,1178,108,108,8);ctx.fill();ctx.drawImage(qrImg,66,1184,96,96);}else{H.fauxQR(66,1184,96,G,CREAM);}
+  ctx.textAlign="center";ctx.fillStyle=G;ctx.font='700 14px "Space Grotesk"';ctx.fillText("SCAN TO VIEW",250,1214);ctx.fillText("BUILDER PROFILE",250,1234);
+  ctx.strokeStyle=H.hexA(G,.3);ctx.setLineDash([5,6]);ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(352,1178);ctx.lineTo(352,1286);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=G;ctx.font='900 16px "Space Grotesk"';ctx.fillText("BUILDER ID",526,1198);
+  var shortId="HHG26-"+(1000+Math.abs(hashStr(builderNo))%9000);ctx.fillStyle=PINK;ctx.font='900 30px "Space Grotesk"';ctx.fillText(shortId,526,1236);
+  var bxx=414;ctx.fillStyle=G;while(bxx<636){var bw4=1+Math.floor((bxx*7)%4);ctx.fillRect(bxx,1254,bw4,34);bxx+=bw4+(1+Math.floor((bxx*5)%3));}
+  // ===== FOOTER RIBBON =====
+  ctx.fillStyle=PINK;H.rr(C-230,1306,460,42,12);ctx.fill();ctx.fillStyle=YEL;ctx.font='16px serif';ctx.textAlign="center";ctx.fillText("✦",C-150,1334);ctx.fillText("✦",C+150,1334);ctx.fillStyle=WH;ctx.font='900 26px "Space Grotesk"';ctx.fillText("#FRAMEINGOA",C,1336);
 }
 function renderCoded(ctx){
   var th=themeById(D.theme),H=mk(ctx),W=1080,Ht=1350,C=540,M=120;
@@ -541,6 +574,7 @@ function init(){
   var rs=$("f-role");ROLES.forEach(function(r){var o=document.createElement("option");o.value=r;o.textContent=r;rs.appendChild(o);});
   rs.value=D.role;rs.addEventListener("change",function(){D.role=rs.value;});
   var tg=$("f-themes");THEMES.forEach(function(th){var el=document.createElement("div");el.className="theme"+(th.id===D.theme?" on":"");el.innerHTML='<div class="sw" style="background:linear-gradient(135deg,'+th.c1+','+th.c2+')"><div style="height:100%;display:flex;align-items:center;justify-content:center;gap:6px"><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent+'"></span><span style="width:16px;height:16px;border-radius:50%;background:'+th.accent2+'"></span></div></div><div class="nm" style="color:'+th.ink+'">'+th.name+'</div>';el.onclick=function(){D.theme=th.id;[].forEach.call(tg.children,function(c){c.classList.remove("on");});el.classList.add("on");drawPhotoPreview();};tg.appendChild(el);});
+  var tc=$("f-tech");if(tc)TECH.forEach(function(t){var el=document.createElement("div");el.className="chip";el.textContent=t;el.onclick=function(){var i=D.tech.indexOf(t);if(i>=0){D.tech.splice(i,1);el.classList.remove("on");}else{if(D.tech.length>=8)return;D.tech.push(t);el.classList.add("on");}};tc.appendChild(el);});
   var why=$("f-why");why.addEventListener("input",function(){$("why-count").textContent=why.value.length;});
   bindPhoto();bindResult();
 }
