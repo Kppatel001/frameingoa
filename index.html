@@ -617,7 +617,7 @@ function renderResult(){
   STATS.builders++;confetti();
 }
 function hashStr(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return h;}
-function genId(){var a="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",s="";for(var i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return "HH-GOA-"+s;}
+function genId(){var n=Math.floor(Math.random()*10000),s=""+n;while(s.length<4)s="0"+s;return "HH-GOA-"+s;}
 function copyId(){try{navigator.clipboard.writeText(builderNo);var h=$("result-hint");if(h)h.textContent="Registration ID "+builderNo+" copied.";}catch(e){}}
 
 /* ============================ RESULT ACTIONS ============================ */
