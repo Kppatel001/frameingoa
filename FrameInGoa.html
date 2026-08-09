@@ -401,79 +401,29 @@ function paintBase(ctx,H,w,h,th){
 }
 
 function renderId(ctx){
+  if(!bgImg){renderCoded(ctx);return;}
   var W=ctx.canvas.width,Ht=ctx.canvas.height,C=W/2,H=mk(ctx);
-  var CREAM="#F4F0D8",FOR="#063B28",HUNT="#075A3D",GOLD="#F2A900",SUN="#F5B400",PINK="#F23863",TROP="#4F8F32",SAGE="#DCE6B7",OFF="#FBF8E9";
-  ctx.fillStyle=CREAM;ctx.fillRect(0,0,W,Ht);ctx.lineCap="round";ctx.lineJoin="round";ctx.textBaseline="alphabetic";
-  // faint border code/leaf symbols
-  ctx.fillStyle=SAGE;ctx.font='700 26px "Space Grotesk"';ctx.textAlign="center";
-  [["</>",90,300],["{ }",990,360],["//",96,760],["<>",985,900],["</>",92,1040],["{ }",985,640]].forEach(function(q){ctx.fillText(q[0],q[1],q[2]);});
-  ctx.strokeStyle=SAGE;ctx.lineWidth=2;[[120,170],[960,180],[130,900],[955,1050]].forEach(function(l){ctx.beginPath();ctx.moveTo(l[0],l[1]);ctx.quadraticCurveTo(l[0]+8,l[1]-14,l[0]+18,l[1]-10);ctx.stroke();});
-  // double border + corner ornaments
-  ctx.strokeStyle=FOR;ctx.lineWidth=12;H.rr(16,16,W-32,Ht-32,42);ctx.stroke();
-  ctx.strokeStyle=GOLD;ctx.lineWidth=3;H.rr(34,34,W-68,Ht-68,32);ctx.stroke();
-  [[46,46],[W-46,46],[46,Ht-46],[W-46,Ht-46]].forEach(function(o){ctx.strokeStyle=GOLD;ctx.lineWidth=3;ctx.beginPath();ctx.arc(o[0],o[1],11,0,7);ctx.stroke();ctx.fillStyle=GOLD;ctx.beginPath();ctx.arc(o[0],o[1],4,0,7);ctx.fill();});
-  // lanyard
-  ctx.fillStyle=FOR;H.rr(C-70,42,140,20,10);ctx.fill();
-  // line-art helpers
-  function palm(x,y,sc,col){ctx.save();ctx.translate(x,y);ctx.scale(sc,sc);ctx.strokeStyle=col;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(-8,-55,6,-108);ctx.stroke();for(var a=0;a<6;a++){var an=-Math.PI/2+(a-2.5)*0.52;ctx.beginPath();ctx.moveTo(6,-108);ctx.quadraticCurveTo(6+Math.cos(an)*46,-108+Math.sin(an)*46-8,6+Math.cos(an)*86,-108+Math.sin(an)*34);ctx.stroke();}ctx.restore();}
-  function sun(x,y,r){ctx.strokeStyle=GOLD;ctx.lineWidth=4;ctx.beginPath();ctx.arc(x,y,r,Math.PI,0);ctx.stroke();ctx.fillStyle=PINK;ctx.beginPath();ctx.arc(x,y,r-6,Math.PI,0);ctx.fill();ctx.strokeStyle=GOLD;ctx.beginPath();ctx.moveTo(x-r-16,y);ctx.lineTo(x+r+16,y);ctx.stroke();for(var i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(x+i*r*0.55,y-r-8);ctx.lineTo(x+i*r*0.55,y-r-22);ctx.stroke();}}
-  function birds(x,y,col){ctx.strokeStyle=col;ctx.lineWidth=3;[[0,0],[30,-12],[-26,-16]].forEach(function(pp){ctx.beginPath();ctx.moveTo(x+pp[0]-11,y+pp[1]);ctx.quadraticCurveTo(x+pp[0],y+pp[1]-9,x+pp[0]+11,y+pp[1]);ctx.stroke();});}
-  function church(x,y,col){ctx.strokeStyle=col;ctx.lineWidth=3;ctx.strokeRect(x,y-46,54,46);ctx.beginPath();ctx.arc(x+27,y-46,16,Math.PI,0);ctx.stroke();ctx.beginPath();ctx.moveTo(x+27,y-64);ctx.lineTo(x+27,y-74);ctx.moveTo(x+21,y-69);ctx.lineTo(x+33,y-69);ctx.stroke();ctx.strokeRect(x+62,y-32,32,32);}
-  function river(x,y){ctx.strokeStyle=GOLD;ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(x,y);ctx.bezierCurveTo(x+40,y+30,x-30,y+70,x+30,y+110);ctx.stroke();ctx.strokeStyle=TROP;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x+10,y);ctx.bezierCurveTo(x+50,y+30,x-20,y+70,x+40,y+110);ctx.stroke();}
-  // ---- HEADER ----
-  ctx.fillStyle=FOR;H.rr(52,88,148,148,20);ctx.fill();
-  ctx.textAlign="center";ctx.fillStyle=OFF;ctx.font='900 28px "Playfair Display"';ctx.fillText("HACKER",126,134);
-  ctx.fillStyle=GOLD;ctx.font='700 28px "Noto Sans Devanagari"';ctx.fillText("गोवा",126,170);
-  ctx.fillStyle=OFF;ctx.font='900 28px "Playfair Display"';ctx.fillText("HOUSE",126,206);
-  ctx.textAlign="left";ctx.font='900 64px "Space Grotesk"';ctx.fillStyle=FOR;ctx.fillText("HH",228,176);var hw=ctx.measureText("HH").width;ctx.fillStyle=GOLD;ctx.fillText("GOA",228+hw+4,176);
-  ctx.fillStyle=FOR;ctx.font='700 28px "Space Grotesk"';ctx.fillText("2 0 2 6",230,216);
-  ctx.textAlign="right";ctx.fillStyle=FOR;ctx.font='800 26px "Space Grotesk"';ctx.fillText("#FrameInGoa",W-54,134);
-  ctx.font='800 22px "Space Grotesk"';ctx.fillText("BUILDERS",W-54,174);ctx.fillText("HACKERS",W-54,200);ctx.fillText("CREATORS",W-54,226);
-  // slogan
-  ctx.textAlign="left";ctx.fillStyle=FOR;ctx.font='900 34px "Space Grotesk"';ctx.fillText("BUILD",60,372);ctx.fillText("SOMETHING",60,410);ctx.fillText("WILD.",60,448);
-  ctx.strokeStyle=GOLD;ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(62,472);ctx.lineTo(122,472);ctx.stroke();
-  // right art
-  palm(918,455,1,FOR);sun(858,548,30);church(930,585,GOLD);birds(838,378,FOR);river(792,470);
-  // ---- PHOTO ----
-  var pr=158,pcy=420;
-  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="#e6e3c8";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=FOR;ctx.font='500 26px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
-  ctx.strokeStyle=FOR;ctx.lineWidth=8;ctx.beginPath();ctx.arc(C,pcy,pr+16,0,7);ctx.stroke();
-  ctx.strokeStyle=GOLD;ctx.lineWidth=4;ctx.beginPath();ctx.arc(C,pcy,pr+6,0,7);ctx.stroke();
-  ctx.strokeStyle=FOR;ctx.lineWidth=3;ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();
-  // ---- NAME ----
-  var name=(D.name||"YOUR NAME").toUpperCase().slice(0,22);ctx.textAlign="center";var ns=H.fit(name,900,"900",'"Space Grotesk"',70,34);ctx.fillStyle=FOR;ctx.font='900 '+ns+'px "Space Grotesk"';ctx.fillText(name,C,706);
-  // ---- ROLE ----
-  var role=(D.role||"BUILDER").toUpperCase().slice(0,26);ctx.fillStyle=GOLD;ctx.font='800 30px "Space Grotesk"';var rw=ctx.measureText(role).width;ctx.fillText(role,C,748);ctx.strokeStyle=GOLD;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(C-rw/2-70,740);ctx.lineTo(C-rw/2-22,740);ctx.moveTo(C+rw/2+22,740);ctx.lineTo(C+rw/2+70,740);ctx.stroke();
-  // ---- BUILDER TITLE ----
-  var by=792,bh=96;ctx.fillStyle=FOR;H.rr(96,by,W-192,bh,20);ctx.fill();
-  ctx.fillStyle=GOLD;H.rr(C-140,by-18,280,40,20);ctx.fill();ctx.fillStyle=FOR;ctx.font='900 20px "Space Grotesk"';ctx.textAlign="center";ctx.fillText("BUILDER TITLE",C,by+9);
-  var title=(D.title||funTitle(D.role,TSEED)).toUpperCase().slice(0,26);ctx.fillStyle=OFF;var ts=H.fit(title,740,"900",'"Space Grotesk"',40,24);ctx.font='900 '+ts+'px "Space Grotesk"';ctx.fillText(title,C,by+82);
-  ctx.fillStyle=GOLD;ctx.beginPath();ctx.arc(148,by+58,6,0,7);ctx.fill();ctx.beginPath();ctx.arc(W-148,by+58,6,0,7);ctx.fill();
-  // ---- PROJECT ----
-  if(D.dream){ctx.fillStyle=GOLD;ctx.font='800 20px "Space Grotesk"';ctx.fillText("BUILDING",C,by+bh+44);var pw2=ctx.measureText("BUILDING").width;ctx.strokeStyle=GOLD;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(C-pw2/2-58,by+bh+38);ctx.lineTo(C-pw2/2-16,by+bh+38);ctx.moveTo(C+pw2/2+16,by+bh+38);ctx.lineTo(C+pw2/2+58,by+bh+38);ctx.stroke();
-  var proj=D.dream.toUpperCase().slice(0,40);ctx.fillStyle=FOR;var ps2=H.fit(proj,820,"900",'"Space Grotesk"',30,20);ctx.font='900 '+ps2+'px "Space Grotesk"';ctx.fillText(proj,C,by+bh+84);}
-  // ---- DETAILS ROW ----
-  var dyy=by+bh+150,sid=(builderNo||"HH-GOA-0000");
-  var items=[["LOCATION",(D.city||"Goa").toUpperCase(),"pin"],["BUILDER ID",sid,"id"],["STATUS","BUILDING","code"],["YEAR","2026","cal"]];
-  var colw=(W-160)/4;
-  for(var di=0;di<4;di++){var cx=80+colw*di+colw/2,iy=dyy-30;
-    if(items[di][2]==="pin"){ctx.strokeStyle=PINK;ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(cx,iy-4,9,Math.PI,0);ctx.lineTo(cx,iy+12);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.arc(cx,iy-4,3,0,7);ctx.stroke();}
-    else if(items[di][2]==="id"){ctx.strokeStyle=FOR;ctx.lineWidth=2.5;ctx.strokeRect(cx-13,iy-10,26,20);ctx.beginPath();ctx.arc(cx-4,iy-2,4,0,7);ctx.stroke();ctx.beginPath();ctx.moveTo(cx+4,iy-4);ctx.lineTo(cx+9,iy-4);ctx.moveTo(cx+4,iy+2);ctx.lineTo(cx+9,iy+2);ctx.stroke();}
-    else if(items[di][2]==="code"){ctx.fillStyle=PINK;ctx.font='900 26px "Space Grotesk"';ctx.textAlign="center";ctx.fillText("</>",cx,iy+8);}
-    else{ctx.strokeStyle=FOR;ctx.lineWidth=2.5;ctx.strokeRect(cx-12,iy-10,24,20);ctx.beginPath();ctx.moveTo(cx-12,iy-3);ctx.lineTo(cx+12,iy-3);ctx.moveTo(cx-6,iy-13);ctx.lineTo(cx-6,iy-7);ctx.moveTo(cx+6,iy-13);ctx.lineTo(cx+6,iy-7);ctx.stroke();}
-    ctx.textAlign="center";ctx.fillStyle=GOLD;ctx.font='800 15px "Space Grotesk"';ctx.fillText(items[di][0],cx,dyy+8);ctx.fillStyle=FOR;var vs=H.fit(String(items[di][1]),colw-22,"900",'"Space Grotesk"',22,13);ctx.font='900 '+vs+'px "Space Grotesk"';ctx.fillText(items[di][1],cx,dyy+36);
-    if(di<3){ctx.strokeStyle=H.hexA(FOR,.25);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(80+colw*(di+1),dyy-40);ctx.lineTo(80+colw*(di+1),dyy+40);ctx.stroke();}}
-  // ---- GOA ILLUSTRATION BAND ----
-  var lb=dyy+52,lh=192;ctx.save();ctx.beginPath();H.rr(16,16,W-32,Ht-32,42);ctx.clip();
-  ctx.save();ctx.beginPath();ctx.rect(34,lb,W-68,lh);ctx.clip();
-  if(bandImg){var iw2=bandImg.naturalWidth||bandImg.width,ih2=bandImg.naturalHeight||bandImg.height,dw=W-68,dh=ih2*dw/iw2;ctx.drawImage(bandImg,34,lb+lh-dh,dw,dh);}else{ctx.fillStyle=FOR;ctx.fillRect(34,lb,W-68,lh);}
-  ctx.restore();
-  // footer
-  var fy=Ht-58;ctx.fillStyle=FOR;ctx.fillRect(16,fy,W-32,60);
-  ctx.textAlign="left";ctx.font='900 26px "Space Grotesk"';ctx.fillStyle=OFF;ctx.fillText("HH",70,fy+38);var fw=ctx.measureText("HH").width;ctx.fillStyle=GOLD;ctx.fillText("GOA",70+fw+2,fy+38);
-  ctx.textAlign="center";ctx.fillStyle=GOLD;ctx.font='800 17px "Space Grotesk"';ctx.fillText("BUILDERS  •  HACKERS  •  CREATORS",C,fy+36);
-  ctx.textAlign="right";ctx.fillStyle=GOLD;ctx.font='900 26px "Space Grotesk"';ctx.fillText("2026",W-70,fy+38);
-  ctx.restore();
+  var G="#14401f",CREAM="#FBF3DE",PINK="#E5197E",YEL="#FFC629",WH="#fff";
+  var iw=bgImg.naturalWidth||bgImg.width,ih=bgImg.naturalHeight||bgImg.height,s=Math.max(W/iw,Ht/ih);
+  ctx.drawImage(bgImg,C-iw*s/2,Ht/2-ih*s/2,iw*s,ih*s);
+  ctx.textBaseline="alphabetic";
+  var pr=195,pcy=459;
+  if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="#dfe3d8";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=G;ctx.font='500 26px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
+  ctx.strokeStyle=YEL;ctx.lineWidth=11;ctx.beginPath();ctx.arc(C,pcy,pr+7,0,7);ctx.stroke();
+  ctx.strokeStyle=PINK;ctx.lineWidth=4;ctx.setLineDash([12,9]);ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();ctx.setLineDash([]);
+  var y0=684;
+  var name=(D.name||"YOUR NAME").toUpperCase().slice(0,20);ctx.fillStyle=G;H.rr(C-280,y0,560,66,18);ctx.fill();ctx.strokeStyle=YEL;ctx.lineWidth=2;H.rr(C-280,y0,560,66,18);ctx.stroke();ctx.fillStyle=WH;ctx.textAlign="center";var ns=H.fit(name,470,"900",'"Space Grotesk"',38,22);ctx.font='900 '+ns+'px "Space Grotesk"';ctx.fillText(name,C,y0+44);
+  var ry=y0+82;var role=(D.role||"BUILDER").toUpperCase().slice(0,22);ctx.fillStyle=YEL;H.rr(C-180,ry,360,50,14);ctx.fill();ctx.fillStyle=G;ctx.font='20px serif';ctx.fillText("⚡",C-145,ry+33);ctx.fillText("⚡",C+145,ry+33);ctx.fillStyle=PINK;ctx.font='900 23px "Space Grotesk"';ctx.fillText(role,C,ry+33);
+  var cy0=ry+86;
+  ctx.fillStyle=G;ctx.font='900 17px "Space Grotesk"';ctx.textAlign="center";ctx.fillText("BUILDER CLASS",236,cy0);ctx.fillText("BEACH BAG",540,cy0);ctx.fillText("CURRENTLY SHIPPING",844,cy0);
+  var title=(D.title||funTitle(D.role,TSEED)).toUpperCase();ctx.fillStyle=PINK;ctx.font='900 22px "Space Grotesk"';wrapText(ctx,title,236,cy0+30,220,26,2);
+  if(qrImg){ctx.fillStyle=WH;H.rr(172,cy0+58,128,128,10);ctx.fill();ctx.drawImage(qrImg,180,cy0+66,112,112);}else{H.fauxQR(180,cy0+66,112,G,CREAM);}
+  ctx.textAlign="left";ctx.font='26px serif';ctx.fillText("🥥",448,cy0+44);ctx.fillText("💻",448,cy0+92);ctx.fillText("🎧",448,cy0+140);
+  ctx.fillStyle=G;ctx.font='700 19px "Space Grotesk"';ctx.fillText("COCONUT",492,cy0+40);ctx.fillText("VS CODE",492,cy0+88);ctx.fillText("LO-FI BEATS",492,cy0+136);
+  var ship=(D.why?D.why:"Building the Future").toUpperCase().slice(0,34);ctx.fillStyle=PINK;ctx.font='900 21px "Space Grotesk"';ctx.textAlign="center";wrapText(ctx,ship,844,cy0+30,210,24,2);
+  ctx.fillStyle=G;ctx.font='900 15px "Space Grotesk"';ctx.fillText("BUILDER ID",844,cy0+108);
+  var shortId="#HH-GOA-"+(1000+Math.abs(hashStr(builderNo))%9000);ctx.fillStyle=PINK;ctx.font='700 19px "Space Grotesk"';ctx.fillText(shortId,844,cy0+134);
+  var bx=752;ctx.fillStyle=G;while(bx<944){var bw4=1+Math.floor((bx*7)%4);ctx.fillRect(bx,cy0+150,bw4,40);bx+=bw4+(1+Math.floor((bx*5)%3));}
 }
 function renderCoded(ctx){
   var th=themeById(D.theme),H=mk(ctx),W=1080,Ht=1350,C=540,M=120;
