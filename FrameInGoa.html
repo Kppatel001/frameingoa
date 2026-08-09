@@ -574,7 +574,7 @@ function generate(){collect();
   var iv=setInterval(function(){i++;if(i<LOAD_MSGS.length){lt.textContent=LOAD_MSGS[i];}},330);
   setTimeout(function(){clearInterval(iv);lt.textContent=LOAD_MSGS[LOAD_MSGS.length-1];finishGenerate();},LOAD_MSGS.length*330+140);
 }
-function qrTarget(){return builderNo;}
+function qrTarget(){return "https://frameingoa.com/builder/"+builderNo;}
 function makeQR(text,cb){
   loadScript("https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js",function(){
     try{
@@ -604,7 +604,7 @@ function renderResult(){
   STATS.builders++;confetti();
 }
 function hashStr(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return h;}
-function genId(){var n=Math.floor(Math.random()*10000),s=""+n;while(s.length<4)s="0"+s;return "HH-GOA-"+s;}
+function genId(){var n=Math.floor(Math.random()*10000),s=""+n;while(s.length<4)s="0"+s;return "HHG-2026-"+s;}
 function copyId(){try{navigator.clipboard.writeText(builderNo);var h=$("result-hint");if(h)h.textContent="Registration ID "+builderNo+" copied.";}catch(e){}}
 
 /* ============================ RESULT ACTIONS ============================ */
@@ -616,7 +616,7 @@ function bindResult(){
 function dataURLtoBlob(d){var arr=d.split(","),mime=(arr[0].match(/:(.*?);/)||[])[1]||"image/png",bstr=atob(arr[1]),n=bstr.length,u8=new Uint8Array(n);while(n--)u8[n]=bstr.charCodeAt(n);return new Blob([u8],{type:mime});}
 function shareX(){
   var cv=$("result-canvas");var dataUrl=cv.toDataURL("image/png");
-  var cap="🚀 Just created my official HH Goa 2026 Builder Identity! Can't wait to build with amazing hackers at HH Goa.";
+  var cap="🚀 Just created my HH Goa 2026 Builder Card! Ready to build, hack, and innovate with amazing creators.";
   var text=cap+" "+HASH;
   var file;try{file=new File([dataURLtoBlob(dataUrl)],"HHGoa2026-"+builderNo+".png",{type:"image/png"});}catch(e){file=null;}
   STATS.shares++;
