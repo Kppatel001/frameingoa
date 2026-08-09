@@ -195,6 +195,7 @@ input[type=range]{accent-color:var(--pink);flex:1}
         <p class="desc">Just your name and what you build — we craft the rest of your builder ID automatically.</p>
         <div class="field"><label>Full name <span class="req">*</span></label><input class="input" id="f-name" maxlength="34" placeholder="Enter Your Name"></div>
         <div class="field"><label>Stack / role <span class="req">*</span></label><select id="f-role"></select></div>
+        <div class="field"><label>What are you building? <span class="opt">(optional)</span></label><input class="input" id="f-dream" maxlength="40" placeholder="e.g. AI-powered education apps"></div>
         <div class="stepnav">
           <button class="btn btn-glass" onclick="goScreen('welcome')">← Back</button>
           <button class="btn btn-grad" onclick="nextStep(1)">Continue →</button>
@@ -447,8 +448,8 @@ function renderId(ctx){
   var title=(D.title||funTitle(D.role,TSEED)).toUpperCase().slice(0,26);ctx.fillStyle=OFF;var ts=H.fit(title,740,"900",'"Space Grotesk"',40,24);ctx.font='900 '+ts+'px "Space Grotesk"';ctx.fillText(title,C,by+82);
   ctx.fillStyle=GOLD;ctx.beginPath();ctx.arc(148,by+58,6,0,7);ctx.fill();ctx.beginPath();ctx.arc(W-148,by+58,6,0,7);ctx.fill();
   // ---- PROJECT ----
-  ctx.fillStyle=GOLD;ctx.font='800 20px "Space Grotesk"';ctx.fillText("BUILDING",C,by+bh+44);var pw2=ctx.measureText("BUILDING").width;ctx.strokeStyle=GOLD;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(C-pw2/2-58,by+bh+38);ctx.lineTo(C-pw2/2-16,by+bh+38);ctx.moveTo(C+pw2/2+16,by+bh+38);ctx.lineTo(C+pw2/2+58,by+bh+38);ctx.stroke();
-  var proj=(D.dream||"Building the Future").toUpperCase().slice(0,34);ctx.fillStyle=FOR;var ps2=H.fit(proj,820,"900",'"Space Grotesk"',30,20);ctx.font='900 '+ps2+'px "Space Grotesk"';ctx.fillText(proj,C,by+bh+84);
+  if(D.dream){ctx.fillStyle=GOLD;ctx.font='800 20px "Space Grotesk"';ctx.fillText("BUILDING",C,by+bh+44);var pw2=ctx.measureText("BUILDING").width;ctx.strokeStyle=GOLD;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(C-pw2/2-58,by+bh+38);ctx.lineTo(C-pw2/2-16,by+bh+38);ctx.moveTo(C+pw2/2+16,by+bh+38);ctx.lineTo(C+pw2/2+58,by+bh+38);ctx.stroke();
+  var proj=D.dream.toUpperCase().slice(0,40);ctx.fillStyle=FOR;var ps2=H.fit(proj,820,"900",'"Space Grotesk"',30,20);ctx.font='900 '+ps2+'px "Space Grotesk"';ctx.fillText(proj,C,by+bh+84);}
   // ---- DETAILS ROW ----
   var dyy=by+bh+150,sid=(builderNo||"HH-GOA-0000");
   var items=[["LOCATION",(D.city||"Goa").toUpperCase(),"pin"],["BUILDER ID",sid,"id"],["STATUS","BUILDING","code"],["YEAR","2026","cal"]];
