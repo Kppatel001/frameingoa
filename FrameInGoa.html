@@ -177,10 +177,11 @@ input[type=range]{accent-color:var(--pink);flex:1}
       </div>
       <div class="feat">
         <span><i class="c">✓</i> Face-safe smart crop</span>
-        <span><i class="c">✓</i> 10 premium themes</span>
+        <span><i class="c">✓</i> No login · Instant</span>
         <span><i class="c">✓</i> HD download</span>
         <span><i class="c">✓</i> Share to X</span>
       </div>
+      <img id="hero-banner" alt="HH Goa 2026 — builders, hackers, creators in Goa" style="width:100%;max-width:980px;margin:32px auto 0;display:block;border-radius:18px;box-shadow:0 16px 50px rgba(0,0,0,.4)">
     </div>
     <div class="foot">Fan-made platform · branding inspired by the Hacker House Goa mark · <b>#FrameInGoa</b></div>
   </section>
@@ -490,7 +491,8 @@ function arcText(ctx,str,cx,cy,r,ca,dir,sp){var ch=str.split(""),w=ch.map(functi
 function drawPhotoPreview(){var cs=[document.getElementById("p-canvas"),document.getElementById("r-photo"),document.getElementById("pfp-canvas")];cs.forEach(function(cv){if(!cv)return;var ctx=cv.getContext("2d"),H=mk(ctx),S=cv.width,C=S/2;ctx.clearRect(0,0,S,S);var th=themeById(D.theme);ctx.fillStyle=th.c2;ctx.beginPath();ctx.arc(C,C,C-6,0,7);ctx.fill();if(photoImg)H.coverC(photoImg,C,C,C-10,ptf);else{ctx.fillStyle=th.ink;ctx.font='500 22px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,C);ctx.textBaseline="alphabetic";}ctx.strokeStyle=th.accent;ctx.lineWidth=6;ctx.beginPath();ctx.arc(C,C,C-8,0,7);ctx.stroke();});}
 /* ============================ INIT ============================ */
 function $(id){return document.getElementById(id);}
-function init(){var rs=$("f-role");ROLES.forEach(function(r){var o=document.createElement("option");o.value=r;o.textContent=r;rs.appendChild(o);});rs.value=D.role;rs.addEventListener("change",function(){D.role=rs.value;});bindPhoto();bindResult();}
+function init(){var rs=$("f-role");ROLES.forEach(function(r){var o=document.createElement("option");o.value=r;o.textContent=r;rs.appendChild(o);});rs.value=D.role;rs.addEventListener("change",function(){D.role=rs.value;});
+  var _hb=$("hero-banner");if(_hb&&typeof BAND_URI!=="undefined")_hb.src=BAND_URI;bindPhoto();bindResult();}
 function animateStats(){[["s-builders",STATS.builders],["s-downloads",STATS.downloads],["s-shares",STATS.shares]].forEach(function(p){var el=$(p[0]),tgt=p[1],c=0;var iv=setInterval(function(){c+=Math.ceil((tgt-c)/14);if(c>=tgt){c=tgt;clearInterval(iv);}el.textContent=c.toLocaleString();},32);});}
 
 /* screens + steps */
