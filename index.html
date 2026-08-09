@@ -435,17 +435,17 @@ function renderId(ctx){
   // right art
   palm(918,455,1,FOR);sun(858,548,30);church(930,585,GOLD);birds(838,378,FOR);river(792,470);
   // ---- PHOTO ----
-  var pr=172,pcy=452;
+  var pr=158,pcy=420;
   if(photoImg)H.coverC(photoImg,C,pcy,pr,ptf);else{ctx.fillStyle="#e6e3c8";ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.fill();ctx.fillStyle=FOR;ctx.font='500 26px "Space Grotesk"';ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("Your photo",C,pcy);ctx.textBaseline="alphabetic";}
   ctx.strokeStyle=FOR;ctx.lineWidth=8;ctx.beginPath();ctx.arc(C,pcy,pr+16,0,7);ctx.stroke();
   ctx.strokeStyle=GOLD;ctx.lineWidth=4;ctx.beginPath();ctx.arc(C,pcy,pr+6,0,7);ctx.stroke();
   ctx.strokeStyle=FOR;ctx.lineWidth=3;ctx.beginPath();ctx.arc(C,pcy,pr,0,7);ctx.stroke();
   // ---- NAME ----
-  var name=(D.name||"YOUR NAME").toUpperCase().slice(0,22);ctx.textAlign="center";var ns=H.fit(name,900,"900",'"Space Grotesk"',70,34);ctx.fillStyle=FOR;ctx.font='900 '+ns+'px "Space Grotesk"';ctx.fillText(name,C,800);
+  var name=(D.name||"YOUR NAME").toUpperCase().slice(0,22);ctx.textAlign="center";var ns=H.fit(name,900,"900",'"Space Grotesk"',70,34);ctx.fillStyle=FOR;ctx.font='900 '+ns+'px "Space Grotesk"';ctx.fillText(name,C,706);
   // ---- ROLE ----
-  var role=(D.role||"BUILDER").toUpperCase().slice(0,26);ctx.fillStyle=GOLD;ctx.font='800 30px "Space Grotesk"';var rw=ctx.measureText(role).width;ctx.fillText(role,C,844);ctx.strokeStyle=GOLD;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(C-rw/2-70,836);ctx.lineTo(C-rw/2-22,836);ctx.moveTo(C+rw/2+22,836);ctx.lineTo(C+rw/2+70,836);ctx.stroke();
+  var role=(D.role||"BUILDER").toUpperCase().slice(0,26);ctx.fillStyle=GOLD;ctx.font='800 30px "Space Grotesk"';var rw=ctx.measureText(role).width;ctx.fillText(role,C,748);ctx.strokeStyle=GOLD;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(C-rw/2-70,740);ctx.lineTo(C-rw/2-22,740);ctx.moveTo(C+rw/2+22,740);ctx.lineTo(C+rw/2+70,740);ctx.stroke();
   // ---- BUILDER TITLE ----
-  var by=876,bh=112;ctx.fillStyle=FOR;H.rr(96,by,W-192,bh,20);ctx.fill();
+  var by=792,bh=96;ctx.fillStyle=FOR;H.rr(96,by,W-192,bh,20);ctx.fill();
   ctx.fillStyle=GOLD;H.rr(C-140,by-18,280,40,20);ctx.fill();ctx.fillStyle=FOR;ctx.font='900 20px "Space Grotesk"';ctx.textAlign="center";ctx.fillText("BUILDER TITLE",C,by+9);
   var title=(D.title||funTitle(D.role,TSEED)).toUpperCase().slice(0,26);ctx.fillStyle=OFF;var ts=H.fit(title,740,"900",'"Space Grotesk"',40,24);ctx.font='900 '+ts+'px "Space Grotesk"';ctx.fillText(title,C,by+82);
   ctx.fillStyle=GOLD;ctx.beginPath();ctx.arc(148,by+58,6,0,7);ctx.fill();ctx.beginPath();ctx.arc(W-148,by+58,6,0,7);ctx.fill();
@@ -464,9 +464,9 @@ function renderId(ctx){
     ctx.textAlign="center";ctx.fillStyle=GOLD;ctx.font='800 15px "Space Grotesk"';ctx.fillText(items[di][0],cx,dyy+8);ctx.fillStyle=FOR;var vs=H.fit(String(items[di][1]),colw-22,"900",'"Space Grotesk"',22,13);ctx.font='900 '+vs+'px "Space Grotesk"';ctx.fillText(items[di][1],cx,dyy+36);
     if(di<3){ctx.strokeStyle=H.hexA(FOR,.25);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(80+colw*(di+1),dyy-40);ctx.lineTo(80+colw*(di+1),dyy+40);ctx.stroke();}}
   // ---- GOA ILLUSTRATION BAND ----
-  var lb=dyy+40,lh=120;ctx.save();ctx.beginPath();H.rr(16,16,W-32,Ht-32,42);ctx.clip();
+  var lb=dyy+52,lh=192;ctx.save();ctx.beginPath();H.rr(16,16,W-32,Ht-32,42);ctx.clip();
   ctx.save();ctx.beginPath();ctx.rect(34,lb,W-68,lh);ctx.clip();
-  if(bandImg){var iw2=bandImg.naturalWidth||bandImg.width,ih2=bandImg.naturalHeight||bandImg.height,sc=Math.max((W-68)/iw2,lh/ih2),dw=iw2*sc,dh=ih2*sc;ctx.drawImage(bandImg,C-dw/2,lb+lh/2-dh/2,dw,dh);}else{ctx.fillStyle=FOR;ctx.fillRect(34,lb,W-68,lh);}
+  if(bandImg){var iw2=bandImg.naturalWidth||bandImg.width,ih2=bandImg.naturalHeight||bandImg.height,dw=W-68,dh=ih2*dw/iw2;ctx.drawImage(bandImg,34,lb+lh-dh,dw,dh);}else{ctx.fillStyle=FOR;ctx.fillRect(34,lb,W-68,lh);}
   ctx.restore();
   // footer
   var fy=Ht-58;ctx.fillStyle=FOR;ctx.fillRect(16,fy,W-32,60);
